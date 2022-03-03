@@ -30,7 +30,7 @@ requires_rstudioapi <- function(
     }
   }
 
-  if (!rstudioapi::hasFun(has_fun, ...)) {
+  if (!rstudioapi::hasFun(has_fun)) {
     cli::cli_abort(
       "{.pkg rstudioapi} function {.fn {has_fun}} is required, but isn't available in the current version. Please update {.pkg rstudioapi}."
     )
