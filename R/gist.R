@@ -1,12 +1,12 @@
 gist <- function(id, file = "user-prefs.json") {
   structure(
     list(id = id, file = file),
-    class = "rsthemes_user_prefs_gist"
+    class = "rsprefs_gist"
   )
 }
 
 is_gist <- function(x) {
-  inherits(x, "rsthemes_user_prefs_gist")
+  inherits(x, "rsprefs_gist")
 }
 
 maybe_gist <- function(x) {
@@ -23,18 +23,20 @@ maybe_gist <- function(x) {
 }
 
 #' @export
-print.rsthemes_user_prefs_gist <- function(x, ...) {
+print.rsprefs_gist <- function(x, ...) {
   url <- gist_url_html(x)
   cli::cli_inform("{.url {url}}")
 }
 
 gist_url_html <- function(gist) {
-  stopifnot(inherits(gist, "rsthemes_user_prefs_gist"))
+  gist <- maybe_gist(gist)
+  stopifnot(is_gist(gist))
   sprintf("https://gist.github.com/%s", gist$id)
 }
 
 gist_get <- function(gist) {
-  stopifnot(inherits(gist, "rsthemes_user_prefs_gist"))
+  gist <- maybe_gist(gist)
+  stopifnot(is_gist(gist))
   tryCatch(
     gh::gh("/gists/{gist_id}", gist_id = gist$id),
     http_error_404 = function(err) {
@@ -58,7 +60,7 @@ gist_get <- function(gist) {
 
 gist_prefs_read <- function(gist) {
   gist <- maybe_gist(gist)
-  stopifnot(inherits(gist, "rsthemes_user_prefs_gist"))
+  stopifnot(is_gist(gist))
 
   x <- gist_get(gist)
 
@@ -80,7 +82,7 @@ gist_prefs_read <- function(gist) {
 
 gist_prefs_write <- function(gist, prefs) {
   gist <- maybe_gist(gist)
-  stopifnot(inherits(gist, "rsthemes_user_prefs_gist"))
+  stopifnot(is_gist(gist))
 
   x <- gist_get(gist)
 
