@@ -1,0 +1,25 @@
+Package: rsprefs
+Title: Manage and Sync Your RStudio Preferences
+Version: 0.0.0.9000
+Authors@R: 
+    person("Garrick", "Aden-Buie", , "garrick@adenbuie.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-7111-0077"))
+Description: Snapshot and restore different versions of your RStudio user
+    preferences. Sync your user preferences via GitHub gist.
+License: MIT + file LICENSE
+Depends: 
+    R (>= 2.10)
+Imports: 
+    checkmate,
+    cli,
+    fs,
+    gh,
+    jsonlite,
+    purrr,
+    rappdirs,
+    rlang,
+    rstudioapi
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
