@@ -108,7 +108,7 @@ rs_prefs_restore <- function(name = NULL, path = NULL, verbose = FALSE) {
 rs_prefs_restore_defaults <- function(verbose = FALSE) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
 
-  old <- rs_prefs_rstudio_read(include_os_settings = FALSE)
+  old <- rs_prefs_rstudio_read(source = c("project", "user", "computed"))
 
   defaults <- purrr::map(
     purrr::set_names(names(old)),
@@ -122,49 +122,66 @@ rs_prefs_restore_defaults <- function(verbose = FALSE) {
   invisible(old)
 }
 
+rstudio_all_prefs <- function() {
+  requires_rstudioapi()
+  tryCatch({
+    rs_allPrefs <- get(".rs.allPrefs", pos = "tools:rstudio")
+    x <- rs_allPrefs()
+    class(x) <- c("tbl_df", "tbl", "data.frame")
+    names(x) <- tolower(names(x))
+    x$value <- purrr::map(x$value, jsonlite::fromJSON, simplifyDataFrame = FALSE)
+    x
+  }, error = function(err) {
+    cli::cli_abort("Could not list RStudio preferences", parent = err)
+  })
+}
+
 rs_prefs_rstudio_read <- function(
-  include = NULL,
+  source = "user",
   exclude = NULL,
-  include_os_settings = FALSE
+  include = NULL
 ) {
   requires_rstudioapi(has_fun = "readRStudioPreference")
+  checkmate::assert_character(include, min.len = 1, any.missing = FALSE, null.ok = TRUE)
+  checkmate::assert_character(exclude, min.len = 1, any.missing = FALSE, null.ok = TRUE)
 
-  missing_pref <- structure(NA, class = "missing_pref")
+  prefs <- rstudio_all_prefs()
 
-  all_pref_names <- names(rs_prefs_schema())
+  finalize_prefs <- function(prefs) {
+    purrr::set_names(prefs$value, prefs$preference)
+  }
+
   if (!is.null(include)) {
-    checkmate::assert_character(include, min.len = 1, any.missing = FALSE)
-    all_pref_names <- intersect(all_pref_names, include)
-  }
-  if (!is.null(exclude)) {
-    checkmate::assert_character(exclude, min.len = 1, any.missing = FALSE)
-    all_pref_names <- setdiff(all_pref_names, exclude)
-  }
-  if (!isTRUE(include_os_settings)) {
-    all_pref_names <- rs_prefs_remove_os_settings(all_pref_names)
+    prefs <- finalize_prefs(prefs[prefs$preference %in% include, ])
+    return(prefs)
   }
 
-  all_prefs <- purrr::map(
-    purrr::set_names(all_pref_names),
-    rstudioapi::readRStudioPreference,
-    default = missing_pref
+  all_prefs <- prefs[["preference"]]
+
+  source <- match.arg(
+    source %||% "all",
+    c("all", "default", "project", "user", "computed"),
+    several.ok = TRUE
   )
-  all_prefs <- purrr::keep(all_prefs, function(x) !identical(x, missing_pref))
 
-  is_default <- purrr::imap_lgl(all_prefs, function(pref, name) {
-    if (!'default' %in% names(rs_prefs_schema()[[name]])) {
-      return(FALSE)
-    }
-    isTRUE(all.equal(rs_prefs_schema()[[name]]$default, pref))
-  })
+  if ("all" %in% source) {
+    source <- NULL
+  }
 
-  all_prefs[!is_default]
+  if (!is.null(source)) {
+    source_prefs <- prefs[prefs$source %in% source, ][["preference"]]
+    all_prefs <- intersect(all_prefs, source_prefs)
+  }
+
+  all_prefs <- setdiff(all_prefs, exclude)
+
+  finalize_prefs(prefs[prefs$preference %in% all_prefs, ])
 }
 
 rs_prefs_rstudio_write <- function(prefs, verbose = FALSE) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
 
-  old <- rs_prefs_rstudio_read(include = names(prefs), include_os_settings = TRUE)
+  old <- rs_prefs_rstudio_read(include = names(prefs))
 
   updated <- 0
   for (name in names(prefs)) {
