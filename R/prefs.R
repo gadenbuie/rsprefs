@@ -90,7 +90,7 @@ rs_prefs_snapshot <- function(
   rs_prefs_user_write(snaps_all, path = path)
 }
 
-rs_prefs_restore <- function(name = NULL, path = NULL, verbose = FALSE) {
+rs_prefs_snapshot_apply <- function(name = NULL, path = NULL, verbose = FALSE) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
   snaps <- rs_prefs_user_read(path)
 
