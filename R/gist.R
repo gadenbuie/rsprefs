@@ -28,6 +28,11 @@ print.rsprefs_gist <- function(x, ...) {
   cli::cli_inform("{.url {url}}")
 }
 
+#' @export
+as.character.rsprefs_gist <- function(x, ...) {
+  gist_url_html(x)
+}
+
 gist_url_html <- function(gist) {
   gist <- maybe_gist(gist)
   stopifnot(is_gist(gist))

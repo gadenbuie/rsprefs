@@ -62,28 +62,30 @@ rs_prefs_snapshot <- function(
   path = NULL,
   include = NULL,
   exclude = NULL,
-  include_os_settings = FALSE,
+  source = "user",
   overwrite = FALSE
 ) {
   requires_rstudioapi(has_fun = "readRStudioPreference")
   checkmate::assert_character(name, len = 1, any.missing = FALSE)
 
   if (is_url(path)) {
-    cli::cli_abort("Cannot snapshot to a URL, please provide a local {.code path}")
+    cli::cli_abort("Cannot snapshot to a URL, please provide a local {.code path} or a {.emph gist id}")
   }
 
-  path <- path %||% rs_prefs_user_path_default()
+  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+  path <- maybe_gist(path)
 
-  snaps_all <- if (fs::file_exists(path)) rs_prefs_user_read(path)
+  snaps_all <- if (is_gist(path) || fs::file_exists(path)) rs_prefs_user_read(path)
   snaps_all <- snaps_all %||% list()
 
   if (name %in% names(snaps_all) && !isTRUE(overwrite)) {
     cli::cli_abort("Snapshot {.field {name}} exists and {.code overwrite} is not {.code TRUE}")
   }
 
-  prefs_snap <- rs_prefs_rstudio_read(include, exclude, include_os_settings)
+  prefs_snap <- rs_prefs_rstudio_read(source = source, include = include, exclude = exclude)
   prefs_snap[["$rstudio_version"]] <- as.character(rstudioapi::versionInfo()$version)
 
+  cli::cli_process_start("Writing snapshot {.field {name}} to {.path {path}}")
   snaps_all[[name]] <- prefs_snap
   rs_prefs_user_write(snaps_all, path = path)
 }
