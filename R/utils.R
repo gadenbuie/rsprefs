@@ -36,3 +36,18 @@ requires_rstudioapi <- function(
     )
   }
 }
+
+rd_describe_schema <- function(schema) {
+  #' @format A data frame with 255 rows and 10 variables:
+  #' \describe{
+  #'   \item{\code{NAME}}{[TYPE] DESCRIPTION}
+  #'   ...
+  #' }
+
+  title <- sprintf("A list with %d items:", length(schema))
+  items <- purrr::map_chr(schema, function(pref) {
+    sprintf("\n  \\item{\\code{%s}}{%s}", pref[["name"]], pref[["description"]])
+  })
+
+  paste0(title, "\n\\describe{\n", paste(items, collapse = ""), "\n}")
+}
