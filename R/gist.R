@@ -104,3 +104,34 @@ gist_prefs_write <- function(prefs, gist = NULL) {
   cli::cli_alert_success("Updated {.file {gist$file}} in gist {.field {gist$id}}")
   invisible(res)
 }
+
+gist_prefs_create <- function(prefs, file = "user-prefs.json", public = FALSE, browse = TRUE) {
+  files <- list()
+  files[[file]] <- list(
+    content = jsonlite::toJSON(prefs, null = "null", auto_unbox = TRUE, pretty = 2)
+  )
+
+  cli::cli_process_start("Creating gist with {.path {file}}")
+
+  res <- gh::gh(
+    "POST /gists",
+    .params = list(
+      files = files,
+      public = isTRUE(public),
+      description = "{rsprefs} RStudio Preferences Sync"
+    )
+  )
+
+  cli::cli_alert_success("Created gist with id {.field {res$id}}")
+  cli::cli_alert_info("Use this gist automatically by adding the following to your {.path ~/.Rprofile}.")
+  cli::cli_text("Call {.code usethis::edit_r_profile()}")
+  cli::cli_text("")
+  cli::cli_text('\t\toptions(rsprefs.gist_id = "{res$id}")')
+  cli::cli_text("")
+
+  if (isTRUE(browse)) {
+    utils::browseURL(res$html_url)
+  }
+
+  invisible(res)
+}
