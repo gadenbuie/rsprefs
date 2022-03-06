@@ -58,8 +58,8 @@ gist_get <- function(gist) {
   )
 }
 
-gist_prefs_read <- function(gist) {
-  gist <- maybe_gist(gist)
+gist_prefs_read <- function(gist = NULL) {
+  gist <- maybe_gist(gist %||% rs_prefs_gist_default())
   stopifnot(is_gist(gist))
 
   x <- gist_get(gist)
@@ -80,8 +80,8 @@ gist_prefs_read <- function(gist) {
   jsonlite::read_json(tmpfile)
 }
 
-gist_prefs_write <- function(gist, prefs) {
-  gist <- maybe_gist(gist)
+gist_prefs_write <- function(prefs, gist = NULL) {
+  gist <- maybe_gist(gist %||% rs_prefs_gist_default())
   stopifnot(is_gist(gist))
 
   x <- gist_get(gist)
