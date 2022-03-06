@@ -40,6 +40,8 @@ gist_url_html <- function(gist) {
 }
 
 gist_get <- function(gist) {
+  gh_has_gist_scope()
+
   gist <- maybe_gist(gist)
   stopifnot(is_gist(gist))
   tryCatch(
@@ -64,6 +66,8 @@ gist_get <- function(gist) {
 }
 
 gist_prefs_read <- function(gist = NULL) {
+  gh_has_gist_scope()
+
   gist <- maybe_gist(gist %||% rs_prefs_gist_default())
   stopifnot(is_gist(gist))
 
@@ -86,6 +90,8 @@ gist_prefs_read <- function(gist = NULL) {
 }
 
 gist_prefs_write <- function(prefs, gist = NULL) {
+  gh_has_gist_scope()
+
   gist <- maybe_gist(gist %||% rs_prefs_gist_default())
   stopifnot(is_gist(gist))
 
@@ -106,6 +112,8 @@ gist_prefs_write <- function(prefs, gist = NULL) {
 }
 
 gist_prefs_create <- function(prefs, file = "user-prefs.json", public = FALSE, browse = TRUE) {
+  gh_has_gist_scope()
+
   files <- list()
   files[[file]] <- list(
     content = jsonlite::toJSON(prefs, null = "null", auto_unbox = TRUE, pretty = 2)
@@ -134,4 +142,19 @@ gist_prefs_create <- function(prefs, file = "user-prefs.json", public = FALSE, b
   }
 
   invisible(res)
+}
+
+gh_has_gist_scope <- function() {
+  user <- gh::gh_whoami()
+
+  scopes <- strsplit(gh::gh_whoami()$scopes, ",\\s*")[[1]]
+  if (!"gist" %in% scopes) {
+    cli::cli_abort(c(
+      "Your GitHub token ({.field {user$token}}) doesn't include the {.strong gist} ",
+      "scope. You can add {.strong gists} to the scope of your token from ",
+      "the settings page at {.url https://github.com/settings/tokens}."
+    ), wrap = TRUE)
+  }
+
+  invisible(TRUE)
 }
