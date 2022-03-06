@@ -13,6 +13,14 @@ rs_prefs_user_write <- function(
   prefs = rs_prefs_user_read(),
   path = NULL
 ) {
+  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+
+  gist <- maybe_gist(path)
+  if (is_gist(gist)) {
+    gist_prefs_write(prefs, gist)
+    return(invisible(prefs))
+  }
+
   if (is_url(path)) {
     cli::cli_abort("Cannot write to a URL, please provide a local {.code path}")
   }
@@ -30,7 +38,7 @@ rs_prefs_user_write <- function(
   checkmate::assert_character(path, len = 1, any.missing = FALSE)
 
   jsonlite::write_json(prefs, path, null = "null", auto_unbox = TRUE, pretty = 2)
-  invisible(path)
+  invisible(prefs)
 }
 
 rs_prefs_user_read <- function(path = NULL) {
