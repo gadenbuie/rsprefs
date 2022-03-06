@@ -85,7 +85,11 @@ rs_prefs_snapshot <- function(
   prefs_snap <- rs_prefs_rstudio_read(source = source, include = include, exclude = exclude)
   prefs_snap[["$rstudio_version"]] <- as.character(rstudioapi::versionInfo()$version)
 
-  cli::cli_process_start("Writing snapshot {.field {name}} to {.path {path}}")
+  if (is_gist(path)) {
+    cli::cli_process_start("Writing snapshot {.field {name}} to gist {.url {path}}")
+  } else {
+    cli::cli_process_start("Writing snapshot {.field {name}} to {.path {path}}")
+  }
   snaps_all[[name]] <- prefs_snap
   rs_prefs_user_write(snaps_all, path = path)
 }
@@ -122,6 +126,25 @@ rs_prefs_snapshot_apply <- function(name = NULL, path = NULL, verbose = FALSE) {
   snap <- snap[!grepl("^[$]", names(snap))]
 
   rs_prefs_rstudio_write(snap, verbose = verbose)
+}
+
+rs_prefs_snapshot_list <- function(path = NULL, verbose = TRUE) {
+  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+  path <- maybe_gist(path)
+
+  snaps <- rs_prefs_user_read(path)
+
+  if (verbose) {
+    if (is_gist(path)) {
+      cli::cli_text("{.url {path}} contains snapshots:")
+    } else {
+      cli::cli_text("{.path {path}} contains snapshots:")
+    }
+    cli::cli_ul(names(snaps))
+    invisible(names(snaps))
+  } else {
+    names(snaps)
+  }
 }
 
 rs_prefs_restore_defaults <- function(verbose = FALSE) {
