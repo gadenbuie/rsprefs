@@ -202,7 +202,7 @@ rs_prefs_rstudio_read <- function(
 
   source <- match.arg(
     source %||% "all",
-    c("all", "default", "project", "user", "computed"),
+    c("all", "project", "user", "system", "computed", "default"),
     several.ok = TRUE
   )
 
