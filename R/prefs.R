@@ -5,6 +5,10 @@ rs_prefs_user_path_default <- function() {
   )
 }
 
+rs_prefs_gist_default <- function() {
+  getOption("rsprefs.gist_id", NULL)
+}
+
 rs_prefs_user_write <- function(
   prefs = rs_prefs_user_read(),
   path = NULL
@@ -30,7 +34,12 @@ rs_prefs_user_write <- function(
 }
 
 rs_prefs_user_read <- function(path = NULL) {
-  path <- path %||% rs_prefs_user_path_default()
+  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+
+  gist <- maybe_gist(path)
+  if (is_gist(gist)) {
+    return(gist_prefs_read(gist))
+  }
 
   checkmate::assert_character(path, len = 1, any.missing = FALSE)
   if (!is_url(path) && !fs::file_exists(path)) {
