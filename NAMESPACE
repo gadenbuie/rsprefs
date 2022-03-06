@@ -3,3 +3,6 @@
 S3method(as.character,rsprefs_gist)
 S3method(print,rs_pref)
 S3method(print,rsprefs_gist)
+export(rs_prefs_snapshot)
+export(rs_prefs_snapshot_apply)
+export(rs_prefs_snapshot_list)

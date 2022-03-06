@@ -57,6 +57,46 @@ rs_prefs_user_read <- function(path = NULL) {
   jsonlite::read_json(path)
 }
 
+#' Snapshot RStudio Preferences
+#'
+#' @description
+#' Save named snapshots of your RStudio preferences that you can apply later.
+#'
+#' * `rs_prefs_snapshot()`: Save your RStudio user preferences with a name that
+#'   you can later use to identify these particular settings.
+#' * `rs_prefs_snapshot_apply()`: Apply a saved snapshot.
+#' * `rs_prefs_snapshot_list()`: List available snapshots.
+#'
+#' @param name The name of the snapshot to save or apply.
+#' @param path A GitHub gist ID or local path where the snapshot should be saved.
+#' @param include Names of RStudio preferences to include. If provided, only
+#'   these preferences are included. See [rstudio_prefs] for preference names.
+#' @param exclude Names of RStudio preferences to exclude from the snapshot. See
+#'   [rstudio_prefs] for all of the preference names.
+#' @param source The source of the current preference value. Preferences are set
+#'   at different levels, from lowest to highest precedence:
+#'
+#'   - `"default"` are RStudio's built-in defaults
+#'   - `"computed"` are detected or supplied from external sources, e.g. the
+#'     path to `git` on your system
+#'   - `"system"` are derived from system-wide `rstudio-prefs.json`
+#'   - `"user"` are set by the user for all sessions (global options)
+#'   - `"project"` are set by the current project session
+#'
+#'   The default is `"user"`, since these are the settings you set yourself for
+#'   all projects. You can include any number of sources, or `"all"` to include
+#'   all preferences regardless of source.
+#' @param overwrite If the snapshot exists, should it be overwritten?
+#' @param verbose Prints or suppress informative output
+#'
+#' @examples
+#' if (interactive()) {
+#'   tmpfile <- tempfile(fileext = ".json")
+#'   rs_prefs_snapshot("example", path = tmpfile)
+#'   rs_prefs_snapshot_list(tmpfile)
+#' }
+#'
+#' @export
 rs_prefs_snapshot <- function(
   name,
   path = NULL,
@@ -94,13 +134,14 @@ rs_prefs_snapshot <- function(
   rs_prefs_user_write(snaps_all, path = path)
 }
 
+#' @rdname rs_prefs_snapshot
+#' @export
 rs_prefs_snapshot_apply <- function(name = NULL, path = NULL, verbose = FALSE) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
   snaps <- rs_prefs_user_read(path)
 
   if (is.null(name)) {
-    cli::cli_alert_info("Available snapshots: {names(snaps)}")
-    return(invisible(names(snaps)))
+    return(rs_prefs_snapshot_list(path, verbose = missing(verbose) || verbose))
   }
 
   checkmate::assert_character(name, len = 1, any.missing = FALSE)
@@ -128,6 +169,8 @@ rs_prefs_snapshot_apply <- function(name = NULL, path = NULL, verbose = FALSE) {
   rs_prefs_rstudio_write(snap, verbose = verbose)
 }
 
+#' @rdname rs_prefs_snapshot
+#' @export
 rs_prefs_snapshot_list <- function(path = NULL, verbose = TRUE) {
   path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
   path <- maybe_gist(path)
@@ -136,9 +179,9 @@ rs_prefs_snapshot_list <- function(path = NULL, verbose = TRUE) {
 
   if (verbose) {
     if (is_gist(path)) {
-      cli::cli_text("{.url {path}} contains snapshots:")
+      cli::cli_text("Snapshot: {.url {path}}")
     } else {
-      cli::cli_text("{.path {path}} contains snapshots:")
+      cli::cli_text("Snapshot: {.path {path}}")
     }
     cli::cli_ul(names(snaps))
     invisible(names(snaps))
