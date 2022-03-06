@@ -21,6 +21,15 @@ rs_prefs_user_write <- function(
     return(invisible(prefs))
   }
 
+  if (identical(path, "new gist")) {
+    gist_prefs_create(prefs, public = TRUE)
+    return(invisible(prefs))
+  }
+  if (identical(path, "new private gist")) {
+    gist_prefs_create(prefs, public = FALSE)
+    return(invisible(prefs))
+  }
+
   if (is_url(path)) {
     cli::cli_abort("Cannot write to a URL, please provide a local {.code path}")
   }
@@ -68,7 +77,9 @@ rs_prefs_user_read <- function(path = NULL) {
 #' * `rs_prefs_snapshot_list()`: List available snapshots.
 #'
 #' @param name The name of the snapshot to save or apply.
-#' @param path A GitHub gist ID or local path where the snapshot should be saved.
+#' @param path A GitHub gist ID or local path where the snapshot should be
+#'   saved. To create a new public gist, set `path = "new gist"`. For a new
+#'   private gist, use `path = "new private gist"`.
 #' @param include Names of RStudio preferences to include. If provided, only
 #'   these preferences are included. See [rstudio_prefs] for preference names.
 #' @param exclude Names of RStudio preferences to exclude from the snapshot. See
@@ -115,8 +126,12 @@ rs_prefs_snapshot <- function(
   path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
   path <- maybe_gist(path)
 
-  snaps_all <- if (is_gist(path) || fs::file_exists(path)) rs_prefs_user_read(path)
-  snaps_all <- snaps_all %||% list()
+  snaps_all <-
+    if (is_gist(path) || fs::file_exists(path)) {
+      rs_prefs_user_read(path)
+    }  else {
+      list()
+    }
 
   if (name %in% names(snaps_all) && !isTRUE(overwrite)) {
     cli::cli_abort("Snapshot {.field {name}} exists and {.code overwrite} is not {.code TRUE}")

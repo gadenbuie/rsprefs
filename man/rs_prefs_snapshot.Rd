@@ -22,7 +22,9 @@ rs_prefs_snapshot_list(path = NULL, verbose = TRUE)
 \arguments{
 \item{name}{The name of the snapshot to save or apply.}
 
-\item{path}{A GitHub gist ID or local path where the snapshot should be saved.}
+\item{path}{A GitHub gist ID or local path where the snapshot should be
+saved. To create a new public gist, set \code{path = "new gist"}. For a new
+private gist, use \code{path = "new private gist"}.}
 
 \item{include}{Names of RStudio preferences to include. If provided, only
 these preferences are included. See \link{rstudio_prefs} for preference names.}
