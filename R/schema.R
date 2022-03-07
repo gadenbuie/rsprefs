@@ -118,5 +118,6 @@ rs_prefs_schema_prepare <- function(url) {
   }
 
   rsp_schema <- purrr::pluck(rsp_schema, "properties")
-  purrr::imap(rsp_schema, prep_properties)
+  rsp_schema <- purrr::imap(rsp_schema, prep_properties)
+  as_rs_pref_list(rsp_schema)
 }

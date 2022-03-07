@@ -124,11 +124,13 @@ rs_prefs_snapshot <- function(
   preview = FALSE
 ) {
   requires_rstudioapi(has_fun = "readRStudioPreference")
-  checkmate::assert_character(name, len = 1, any.missing = FALSE, null.ok = TRUE)
 
-  if (is.null(name) || isTRUE(preview)) {
-    return(rs_prefs_rstudio_read(source = source, include = include, exclude = exclude))
+  if (isTRUE(preview) || is.null(name)) {
+    prefs <- rs_prefs_rstudio_read(source = source, include = include, exclude = exclude)
+    return(as_rs_pref_list(prefs, name = if (!missing(name)) name))
   }
+
+  checkmate::assert_character(name, len = 1, any.missing = FALSE, null.ok = TRUE)
 
   if (is_url(path)) {
     cli::cli_abort("Cannot snapshot to a URL, please provide a local {.code path} or a {.emph gist id}")
@@ -198,7 +200,7 @@ rs_prefs_snapshot_apply <- function(
   snap <- snap[!grepl("^[$]", names(snap))]
 
   if (isTRUE(preview)) {
-    return(snap)
+    return(as_rs_pref_list(snap, name = name))
   }
 
   rs_prefs_rstudio_write(snap, verbose = verbose)
@@ -423,4 +425,62 @@ print.rs_pref <- function(x, ...) {
   }
 
   invisible(x)
+}
+
+as_rs_pref_list <- function(x, name = NULL) {
+  structure(x, class = "rs_pref_list", snap_name = name)
+}
+
+#' @export
+print.rs_pref_list <- function(x, ..., n = NULL) {
+  snap_name <- attr(x, "snap_name", exact = TRUE)
+  if (!is.infinite(n %||% 1)) {
+    checkmate::assert_int(n, null.ok = TRUE)
+  }
+  total <- length(x)
+  if (is.null(n)) {
+    if (total > 20) {
+      x <- x[1:10]
+    }
+  } else {
+    if (n < total) {
+      x <- x[seq_len(n)]
+    }
+  }
+  if (!is.null(snap_name)) {
+    cli::cli_div(class = "hdr", theme = list(.hdr = list("font-style" = "italic")))
+    cli::cli_text('<snapshot {.field "{snap_name}"}>')
+    cli::cli_end()
+  }
+  purrr::iwalk(x, function(pref, name) {
+    if (inherits(pref, "rs_pref")) {
+      pref_json <- jsonlite::toJSON(pref$default, auto_unbox = TRUE, force = TRUE)
+    } else {
+      pref_json <- jsonlite::toJSON(pref, auto_unbox = TRUE, force = TRUE)
+      if (is.logical(pref)) {
+        if (isTRUE(pref)) {
+          pref_json <- cli::col_yellow(pref_json)
+        } else {
+          pref_json <- cli::col_red(pref_json)
+        }
+      }
+      if (is.character(pref)) {
+        pref_json <- cli::col_cyan(pref_json)
+      }
+      if (!is.list(pref)) {
+        pref_json <- cli::col_magenta(pref_json)
+      }
+    }
+    pref_json <- cli::ansi_strtrim(
+      pref_json,
+      width= cli::console_width() - nchar(name) - 4
+    )
+    name <- cli::col_blue(name)
+    cli::cli_text("{name}: {pref_json}")
+  })
+  if (total > length(x)) {
+    cli::cli_text(
+      cli::col_silver(sprintf("... and %s more", total - length(x)))
+    )
+  }
 }
