@@ -16,6 +16,10 @@
 #'
 #' @export
 rstudio_prefs_schema <- function(version = NULL) {
+  if (!is.null(version) && version %in% names(rsprefs::rstudio_prefs_v)) {
+    return(rsprefs::rstudio_prefs_v[[version]])
+  }
+
   v_rstudio <- rstudio_version()
   v_closest_release <- rstudio_closest_release(v_rstudio)
 
