@@ -70,14 +70,14 @@ Snapshots are named and can be stored locally or in a [GitHub gist](https://gist
 
 ### Saving your RStudio preferences locally
 
-By default, rsprefs will store snapshots in a JSON file in ` `r rappdirs::user_config_dir("rsthemes")` `,
+By default, rsprefs will store snapshots in a JSON file in `rappdirs::user_config_dir("rsprefs")`,
 but you can choose where to store snapshots with the `path` argument.
 
 In these examples, I'll use a temporary file for demonstration purposes.
 Here I'll take a snapshot of my current preferences.
 
 ```{r}
-tmp_snap <- fs::path_temp(ext = "json")
+tmp_snap <- "tmp_snap.json"
 
 rsprefs::rs_prefs_snapshot("demo", path = tmp_snap)
 ```

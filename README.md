@@ -63,17 +63,17 @@ preferences. Snapshots are named and can be stored locally or in a
 ### Saving your RStudio preferences locally
 
 By default, rsprefs will store snapshots in a JSON file in
-`~/Library/Application Support/rsthemes`, but you can choose where to
+`rappdirs::user_config_dir("rsprefs")`, but you can choose where to
 store snapshots with the `path` argument.
 
 In these examples, I’ll use a temporary file for demonstration purposes.
 Here I’ll take a snapshot of my current preferences.
 
 ``` r
-tmp_snap <- fs::path_temp(ext = "json")
+tmp_snap <- "tmp_snap.json"
 
 rsprefs::rs_prefs_snapshot("demo", path = tmp_snap)
-#> ℹ Writing snapshot demo to '/var/folders/zw/8z2vpz1s0cl3gwpyh5p72mwh0000gn/T/…✓ Writing snapshot demo to '/var/folders/zw/8z2vpz1s0cl3gwpyh5p72mwh0000gn/T/…
+#> ℹ Writing snapshot demo to 'tmp_snap.json' ... done
 ```
 
 You can list available preference snapshots with
@@ -81,7 +81,7 @@ You can list available preference snapshots with
 
 ``` r
 rsprefs::rs_prefs_snapshot_list(path = tmp_snap)
-#> Snapshot: '/var/folders/zw/8z2vpz1s0cl3gwpyh5p72mwh0000gn/T/RtmpwgGD7b.json'
+#> Snapshot: 'tmp_snap.json'
 #> • demo
 ```
 
@@ -144,7 +144,7 @@ rsprefs::rs_prefs_snapshot(
   path = tmp_snap,
   include = "panes"
 )
-#> ℹ Writing snapshot favorite_panes to '/var/folders/zw/8z2vpz1s0cl3gwpyh5p72mw…✓ Writing snapshot favorite_panes to '/var/folders/zw/8z2vpz1s0cl3gwpyh5p72mw…
+#> ℹ Writing snapshot favorite_panes to 'tmp_snap.json'✓ Writing snapshot favorite_panes to 'tmp_snap.json' ... done
 
 rsprefs::rs_prefs_snapshot_apply(
   name = "favorite_panes",

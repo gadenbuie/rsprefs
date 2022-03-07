@@ -1,6 +1,6 @@
 rs_prefs_user_path_default <- function() {
   fs::path(
-    rappdirs::user_config_dir("rsthemes"),
+    rappdirs::user_config_dir("rsprefs"),
     "user-prefs.json"
   )
 }
