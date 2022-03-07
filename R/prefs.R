@@ -232,9 +232,11 @@ rs_prefs_restore_defaults <- function(verbose = FALSE) {
 
   old <- rs_prefs_rstudio_read(source = c("project", "user", "computed"))
 
+  schema <- rstudio_prefs_schema()
+
   defaults <- purrr::map(
     purrr::set_names(names(old)),
-    ~ rstudio_prefs_schema()[[.x]]$default
+    ~ schema[[.x]]$default
   )
 
   defaults <- purrr::compact(defaults)
@@ -304,15 +306,16 @@ rs_prefs_rstudio_write <- function(prefs, verbose = FALSE) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
 
   old <- rs_prefs_rstudio_read(include = names(prefs))
+  schema <- rstudio_prefs_schema(quiet = TRUE)
 
   updated <- 0
   for (name in names(prefs)) {
-    if (!name %in% names(rstudio_prefs_schema())) {
+    if (!name %in% names(schema)) {
       cli::cli_alert_warning("{.strong {name}} is not a preference in the current version of RStudio")
     }
     if (verbose) id <- cli::cli_process_start("{name}")
     tryCatch({
-      rs_write_rstudio_preference(name, prefs[[name]])
+      rs_write_rstudio_preference(name, prefs[[name]], type = schema[[name]]$type)
       updated <- updated + 1
     }, error = function(err) {
       if (verbose) cli::cli_process_failed(id, "{.strong {name}} could not update preference")

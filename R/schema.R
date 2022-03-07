@@ -10,12 +10,13 @@
 #'
 #' @param version The version of the RStudio IDE, e.g. `"1.3.959"`,
 #'   `"1.4.1717"`, or `"2021.09.0+351"`.
+#' @param quiet Suppress console messages and output
 #'
 #' @examples
 #' rstudio_prefs_schema("2021.09.0+351")
 #'
 #' @export
-rstudio_prefs_schema <- function(version = NULL) {
+rstudio_prefs_schema <- function(version = NULL, quiet = FALSE) {
   if (!is.null(version) && version %in% names(rsprefs::rstudio_prefs_v)) {
     return(rsprefs::rstudio_prefs_v[[version]])
   }
@@ -46,14 +47,16 @@ rstudio_prefs_schema <- function(version = NULL) {
   success <- FALSE
   schema <- NULL
   tryCatch({
-    schema <- rs_prefs_schema_prepare(url)
+    schema <- rs_prefs_schema_prepare(url, quiet = quiet)
     success <- TRUE
   }, error = function(err) {
     v_closest_str <- names(v_closest_release)[[1]]
-    cli::cli_inform(
-      "Could not download RStudio preference schema for version v{version}, defaulting to {.strong v{v_closest_str}}.",
-      parent = err
-    )
+    if (!quiet) {
+      cli::cli_inform(
+        "Could not download RStudio preference schema for version v{version}, defaulting to {.strong v{v_closest_str}}.",
+        parent = err
+      )
+    }
     schema <<- rsprefs::rstudio_prefs_v[[v_closest_str]]
   })
 
@@ -99,16 +102,22 @@ rstudio_closest_release <- function(version = NULL) {
   releases[length(releases)]
 }
 
-rs_prefs_schema_prepare <- function(url) {
+rs_prefs_schema_prepare <- function(url, quiet = TRUE) {
   rsp_schema <-
     if (grepl("\n", url)) {
       tmpfile <- tempfile(fileext = ".json")
       on.exit(unlink(tmpfile))
       writeLines(url, tmpfile)
       jsonlite::read_json(tmpfile)
-    } else {
+    } else if (!quiet) {
       cli::cli_process_start("Downloading preferences from: {.url {url}}")
       jsonlite::read_json(url)
+    } else {
+      suppressWarnings(
+        suppressMessages(
+          jsonlite::read_json(url)
+        )
+      )
     }
 
   prep_properties <- function(x, name, parent = NULL) {

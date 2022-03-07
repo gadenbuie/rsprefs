@@ -4,11 +4,13 @@
 \alias{rstudio_prefs_schema}
 \title{Look up RStudio Preference Schema}
 \usage{
-rstudio_prefs_schema(version = NULL)
+rstudio_prefs_schema(version = NULL, quiet = FALSE)
 }
 \arguments{
 \item{version}{The version of the RStudio IDE, e.g. \code{"1.3.959"},
 \code{"1.4.1717"}, or \code{"2021.09.0+351"}.}
+
+\item{quiet}{Suppress console messages and output}
 }
 \description{
 Finds and downloads the RStudio user preference schema for your current
