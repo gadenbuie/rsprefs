@@ -21,6 +21,7 @@ rstudio_prefs_schema <- function(version = NULL) {
   }
 
   v_rstudio <- rstudio_version()
+  version <- version %||% as.character(v_rstudio)
   v_closest_release <- rstudio_closest_release(v_rstudio)
 
   if (length(v_closest_release) == 0) {
