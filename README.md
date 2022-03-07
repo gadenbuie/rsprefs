@@ -43,7 +43,7 @@ remotes::install_github("gadenbuie/rsprefs")
     using the gist ID found from the global option.
 
     ``` r
-    rsprefs::rs_prefs_snapshot("sync")
+    rsprefs::rs_prefs_snapshot("sync", overwite = TRUE)
     ```
 
 4.  On a different computer or session, setup the `rsprefs.gist_id`

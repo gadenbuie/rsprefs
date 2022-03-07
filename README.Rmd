@@ -53,7 +53,7 @@ remotes::install_github("gadenbuie/rsprefs")
 3. If you change your preferences you can update your snapshot by name, using the gist ID found from the global option.
 
    ```r
-   rsprefs::rs_prefs_snapshot("sync")
+   rsprefs::rs_prefs_snapshot("sync", overwrite = TRUE)
    ```
    
 4. On a different computer or session, setup the `rsprefs.gist_id` option and then apply your snapshot.
