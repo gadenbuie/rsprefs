@@ -31,7 +31,7 @@ rstudio_prefs_schema <- function(version = NULL) {
     ))
   }
 
-  if (identical(v_rstudio, v_closest_release[[1]])) {
+  if (identical(version, v_closest_release[[1]])) {
     return(rsprefs::rstudio_prefs_v[[names(v_closest_release)[[1]]]])
   }
 
@@ -49,11 +49,12 @@ rstudio_prefs_schema <- function(version = NULL) {
     schema <- rs_prefs_schema_prepare(url)
     success <- TRUE
   }, error = function(err) {
+    v_closest_str <- names(v_closest_release)[[1]]
     cli::cli_inform(
-      "Could not download RStudio preference schema for version v{version}, defaulting to {.strong v{v_closest_release}}.",
+      "Could not download RStudio preference schema for version v{version}, defaulting to {.strong v{v_closest_str}}.",
       parent = err
     )
-    schema <<- rsprefs::rstudio_prefs_v[[names(v_closest_release)[[1]]]]
+    schema <<- rsprefs::rstudio_prefs_v[[v_closest_str]]
   })
 
   if (success) {
