@@ -45,10 +45,10 @@ rstudio_prefs_schema <- function(version = NULL) {
     success <- TRUE
   }, error = function(err) {
     cli::cli_inform(
-      "Could not download RStudio preference schema for version v{version}, defaulting to {.pkg rsthemes}' built-in version.",
+      "Could not download RStudio preference schema for version v{version}, defaulting to {.strong v{v_closest_release}}.",
       parent = err
     )
-    schema <<- rstudio_prefs
+    schema <<- rstudio_prefs_v[[names(v_closest_release)[[1]]]]
   })
 
   if (success) {
