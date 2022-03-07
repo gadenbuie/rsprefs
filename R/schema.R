@@ -88,10 +88,14 @@ rstudio_version <- function(x = NULL) {
       rstudioapi::versionInfo()
     }
 
-  if (is.null(x$long_version)) {
-    return(x$version)
-  }
-  package_version(gsub("[+_-]", ".", x$long_version))
+  ver <- x$long_version %||% x$version
+  ver <- as.character(ver)
+  # Change +382 build number to .382
+  ver <- gsub("[+_-]", ".", ver)
+  # keep only first four numbers (e.g. drop trailing ".pro1")
+  ver <- strsplit(ver, "[.]")[[1]]
+  ver <- paste(ver[1:min(4, length(ver))], collapse = ".")
+  package_version(ver)
 }
 
 rstudio_closest_release <- function(version = NULL) {
