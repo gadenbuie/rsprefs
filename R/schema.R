@@ -67,7 +67,7 @@ rstudio_prefs_schema_url <- function(tag) {
 
   sprintf(
     "https://github.com/rstudio/rstudio/raw/%s/src/cpp/session/resources/schema/user-prefs-schema.json",
-    URLencode(tag, reserved = TRUE)
+    utils::URLencode(tag, reserved = TRUE)
   )
 }
 
