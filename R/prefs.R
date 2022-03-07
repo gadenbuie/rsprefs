@@ -21,7 +21,7 @@ rs_prefs_user_write <- function(
     return(invisible(prefs))
   }
 
-  if (identical(path, "new gist")) {
+  if (identical(path, "new gist") || identical(path, "new public gist")) {
     gist_prefs_create(prefs, public = TRUE)
     return(invisible(prefs))
   }
