@@ -27,7 +27,7 @@ rstudio_prefs_schema <- function(version = NULL) {
   }
 
   if (identical(v_rstudio, v_closest_release[[1]])) {
-    return(rstudio_prefs_v[[names(v_closest_release)[[1]]]])
+    return(rsprefs::rstudio_prefs_v[[names(v_closest_release)[[1]]]])
   }
 
   cache_dir <- rappdirs::user_data_dir("rsprefs")
@@ -48,7 +48,7 @@ rstudio_prefs_schema <- function(version = NULL) {
       "Could not download RStudio preference schema for version v{version}, defaulting to {.strong v{v_closest_release}}.",
       parent = err
     )
-    schema <<- rstudio_prefs_v[[names(v_closest_release)[[1]]]]
+    schema <<- rsprefs::rstudio_prefs_v[[names(v_closest_release)[[1]]]]
   })
 
   if (success) {
@@ -87,7 +87,7 @@ rstudio_version <- function(x = NULL) {
 
 rstudio_closest_release <- function(version = NULL) {
   version <- rstudio_version(version)
-  releases <- purrr::set_names(names(rstudio_prefs_v))
+  releases <- purrr::set_names(names(rsprefs::rstudio_prefs_v))
   releases <- purrr::map(releases, rstudio_version)
   releases <- purrr::keep(releases, `<=`, version)
   releases[length(releases)]
