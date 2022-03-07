@@ -12,10 +12,10 @@
 #'   `"1.4.1717"`, or `"2021.09.0+351"`.
 #'
 #' @examples
-#' rs_prefs_schema("2021.09.0+351")
+#' rstudio_prefs_schema("2021.09.0+351")
 #'
 #' @export
-rs_prefs_schema <- function(version = NULL) {
+rstudio_prefs_schema <- function(version = NULL) {
   v_rstudio <- rstudio_version()
   v_closest_release <- rstudio_closest_release(v_rstudio)
 

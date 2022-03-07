@@ -232,7 +232,7 @@ rs_prefs_restore_defaults <- function(verbose = FALSE) {
 
   defaults <- purrr::map(
     purrr::set_names(names(old)),
-    ~ rs_prefs_schema()[[.x]]$default
+    ~ rstudio_prefs_schema()[[.x]]$default
   )
 
   defaults <- purrr::compact(defaults)
@@ -305,8 +305,8 @@ rs_prefs_rstudio_write <- function(prefs, verbose = FALSE) {
 
   updated <- 0
   for (name in names(prefs)) {
-    if (!name %in% names(rs_prefs_schema())) {
-      cli::cli_alert_warning("{.strong {name}} is not a known RStudio preference")
+    if (!name %in% names(rstudio_prefs_schema())) {
+      cli::cli_alert_warning("{.strong {name}} is not a preference in the current version of RStudio")
     }
     if (verbose) id <- cli::cli_process_start("{name}")
     tryCatch({
@@ -331,7 +331,7 @@ rs_prefs_rstudio_write <- function(prefs, verbose = FALSE) {
 
 rs_write_rstudio_preference <- function(name, value, type = NULL) {
   cast <- switch(
-    type %||% rs_prefs_schema()[[name]][["type"]],
+    type %||% rstudio_prefs_schema()[[name]][["type"]],
     integer = as.integer,
     real = ,
     number = as.double,
