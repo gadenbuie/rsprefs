@@ -1,4 +1,20 @@
-
+#' Look up RStudio Preference Schema
+#'
+#' Finds and downloads the RStudio user preference schema for your current
+#' version of the IDE (or the most recent released version of the IDE). The
+#' preference details for all released versions of the IDE are included in the
+#' \pkg{rsprefs} package. The preferences from the latest version are available
+#' in [rstudio_prefs], but note that those preferences may not match your
+#' version of RStudio unless you're using the latest preview version available
+#' at <https://dailies.rstudio.com>.
+#'
+#' @param version The version of the RStudio IDE, e.g. `"1.3.959"`,
+#'   `"1.4.1717"`, or `"2021.09.0+351"`.
+#'
+#' @examples
+#' rs_prefs_schema("2021.09.0+351")
+#'
+#' @export
 rs_prefs_schema <- function(version = NULL) {
   v_rstudio <- rstudio_version()
   v_closest_release <- rstudio_closest_release(v_rstudio)
