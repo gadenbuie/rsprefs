@@ -20,7 +20,12 @@ rs_prefs_snapshot_apply(name = NULL, path = NULL, verbose = FALSE)
 rs_prefs_snapshot_list(path = NULL, verbose = TRUE)
 }
 \arguments{
-\item{name}{The name of the snapshot to save or apply.}
+\item{name}{The name of the snapshot to save or apply.
+\itemize{
+\item In \code{rs_prefs_snapshot()}, set to \code{NULL} to show the preferences that
+would be included in the snapshot.
+\item In \code{rs_prefs_snapshot_apply()}, set to \code{NULL} to list available snapshots.
+}}
 
 \item{path}{A GitHub gist ID or local path where the snapshot should be
 saved. To create a new public gist, set \code{path = "new gist"}. For a new

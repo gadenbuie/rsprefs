@@ -77,6 +77,10 @@ rs_prefs_user_read <- function(path = NULL) {
 #' * `rs_prefs_snapshot_list()`: List available snapshots.
 #'
 #' @param name The name of the snapshot to save or apply.
+#'
+#'   - In `rs_prefs_snapshot()`, set to `NULL` to show the preferences that
+#'     would be included in the snapshot.
+#'   - In `rs_prefs_snapshot_apply()`, set to `NULL` to list available snapshots.
 #' @param path A GitHub gist ID or local path where the snapshot should be
 #'   saved. To create a new public gist, set `path = "new gist"`. For a new
 #'   private gist, use `path = "new private gist"`.
@@ -117,7 +121,11 @@ rs_prefs_snapshot <- function(
   overwrite = FALSE
 ) {
   requires_rstudioapi(has_fun = "readRStudioPreference")
-  checkmate::assert_character(name, len = 1, any.missing = FALSE)
+  checkmate::assert_character(name, len = 1, any.missing = FALSE, null.ok = TRUE)
+
+  if (is.null(name)) {
+    return(rs_prefs_rstudio_read(source = source, include = include, exclude = exclude))
+  }
 
   if (is_url(path)) {
     cli::cli_abort("Cannot snapshot to a URL, please provide a local {.code path} or a {.emph gist id}")
