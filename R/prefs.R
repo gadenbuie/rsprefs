@@ -103,6 +103,8 @@ rs_prefs_user_read <- function(path = NULL) {
 #'   all preferences regardless of source.
 #' @param overwrite If the snapshot exists, should it be overwritten?
 #' @param verbose Prints or suppress informative output
+#' @param preview When `TRUE`, previews the preferences that will be or are
+#'   included in the snapshot, but does not save or apply them.
 #'
 #' @examples
 #' if (interactive()) {
@@ -118,12 +120,13 @@ rs_prefs_snapshot <- function(
   include = NULL,
   exclude = NULL,
   source = "user",
-  overwrite = FALSE
+  overwrite = FALSE,
+  preview = FALSE
 ) {
   requires_rstudioapi(has_fun = "readRStudioPreference")
   checkmate::assert_character(name, len = 1, any.missing = FALSE, null.ok = TRUE)
 
-  if (is.null(name)) {
+  if (is.null(name) || isTRUE(preview)) {
     return(rs_prefs_rstudio_read(source = source, include = include, exclude = exclude))
   }
 
@@ -159,7 +162,12 @@ rs_prefs_snapshot <- function(
 
 #' @rdname rs_prefs_snapshot
 #' @export
-rs_prefs_snapshot_apply <- function(name = NULL, path = NULL, verbose = FALSE) {
+rs_prefs_snapshot_apply <- function(
+  name = NULL,
+  path = NULL,
+  verbose = FALSE,
+  preview = FALSE
+) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
   snaps <- rs_prefs_user_read(path)
 
@@ -188,6 +196,10 @@ rs_prefs_snapshot_apply <- function(name = NULL, path = NULL, verbose = FALSE) {
   }
 
   snap <- snap[!grepl("^[$]", names(snap))]
+
+  if (isTRUE(preview)) {
+    return(snap)
+  }
 
   rs_prefs_rstudio_write(snap, verbose = verbose)
 }

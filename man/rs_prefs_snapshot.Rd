@@ -12,10 +12,16 @@ rs_prefs_snapshot(
   include = NULL,
   exclude = NULL,
   source = "user",
-  overwrite = FALSE
+  overwrite = FALSE,
+  preview = FALSE
 )
 
-rs_prefs_snapshot_apply(name = NULL, path = NULL, verbose = FALSE)
+rs_prefs_snapshot_apply(
+  name = NULL,
+  path = NULL,
+  verbose = FALSE,
+  preview = FALSE
+)
 
 rs_prefs_snapshot_list(path = NULL, verbose = TRUE)
 }
@@ -53,6 +59,9 @@ all projects. You can include any number of sources, or \code{"all"} to include
 all preferences regardless of source.}
 
 \item{overwrite}{If the snapshot exists, should it be overwritten?}
+
+\item{preview}{When \code{TRUE}, previews the preferences that will be or are
+included in the snapshot, but does not save or apply them.}
 
 \item{verbose}{Prints or suppress informative output}
 }
