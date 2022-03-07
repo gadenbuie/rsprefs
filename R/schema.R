@@ -30,7 +30,7 @@ rstudio_prefs_schema <- function(version = NULL) {
     return(rstudio_prefs_v[[names(v_closest_release)[[1]]]])
   }
 
-  cache_dir <- rappdirs::user_data_dir("rsthemes")
+  cache_dir <- rappdirs::user_data_dir("rsprefs")
   path <- fs::path(cache_dir, version, ext = "rds")
   if (fs::file_exists(path)) {
     return(readRDS(path))
