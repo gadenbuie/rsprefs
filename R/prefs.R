@@ -334,9 +334,9 @@ rs_prefs_rstudio_write <- function(prefs, verbose = FALSE) {
   invisible(old)
 }
 
-rs_write_rstudio_preference <- function(name, value, type = NULL) {
+rs_write_rstudio_preference <- function(name, value, type = NULL, try_again = 2L) {
   cast <- switch(
-    type %||% rstudio_prefs_schema()[[name]][["type"]],
+    type %||% rstudio_prefs_schema(quiet = TRUE)[[name]][["type"]],
     integer = as.integer,
     real = ,
     number = as.double,
@@ -352,11 +352,11 @@ rs_write_rstudio_preference <- function(name, value, type = NULL) {
     rstudioapi::writeRStudioPreference(name, cast(value)),
     error = function(err) {
       is_type_mismatch <- grepl("type mismatch", tolower(err$message))
-      if (!is.null(type) || !is_type_mismatch) {
+      if (try_again <= 0L || !is_type_mismatch) {
         rlang::abort(err$message)
       }
       expected <- sub("^.+expected <(.+?)>.+$", "\\1", tolower(err$message))
-      rs_write_rstudio_preference(name, value, type = expected)
+      rs_write_rstudio_preference(name, value, type = expected, try_again = try_again - 1L)
     }
   )
 }
