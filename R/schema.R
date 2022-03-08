@@ -90,6 +90,7 @@ rstudio_version <- function(x = NULL) {
 
   ver <- x$long_version %||% x$version
   ver <- as.character(ver)
+  ver <- sub("-daily", "", ver, fixed = TRUE)
   # Change +382 build number to .382
   ver <- gsub("[+_-]", ".", ver)
   # keep only first four numbers (e.g. drop trailing ".pro1")
