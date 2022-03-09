@@ -105,6 +105,8 @@ rs_prefs_user_read <- function(path = NULL) {
 #' @param verbose Prints or suppress informative output
 #' @param preview When `TRUE`, previews the preferences that will be or are
 #'   included in the snapshot, but does not save or apply them.
+#' @param exclude_os_prefs Excludes operating-system or machine-dependent
+#'   system preferences from the snapshot or the snapshot restore.
 #'
 #' @examples
 #' if (interactive()) {
@@ -120,6 +122,7 @@ rs_prefs_snapshot <- function(
   include = NULL,
   exclude = NULL,
   source = "user",
+  exclude_os_prefs = TRUE,
   overwrite = FALSE,
   preview = FALSE
 ) {
@@ -150,7 +153,12 @@ rs_prefs_snapshot <- function(
     cli::cli_abort("Snapshot {.field {name}} exists and {.code overwrite} is not {.code TRUE}")
   }
 
-  prefs_snap <- rs_prefs_rstudio_read(source = source, include = include, exclude = exclude)
+  prefs_snap <- rs_prefs_rstudio_read(
+    source = source,
+    include = include,
+    exclude = exclude,
+    exclude_os_prefs = exclude_os_prefs
+  )
   prefs_snap[["$rstudio_version"]] <- as.character(rstudioapi::versionInfo()$version)
 
   if (is_gist(path)) {
@@ -167,6 +175,7 @@ rs_prefs_snapshot <- function(
 rs_prefs_snapshot_apply <- function(
   name = NULL,
   path = NULL,
+  exclude_os_prefs = TRUE,
   verbose = FALSE,
   preview = FALSE
 ) {
@@ -201,6 +210,10 @@ rs_prefs_snapshot_apply <- function(
 
   if (isTRUE(preview)) {
     return(as_rs_pref_list(snap, name = name))
+  }
+
+  if (isTRUE(exclude_os_prefs)) {
+    snap <- rs_prefs_exclude_os_prefs(snap)
   }
 
   rs_prefs_rstudio_write(snap, verbose = verbose)
@@ -263,7 +276,8 @@ rstudio_all_prefs <- function() {
 rs_prefs_rstudio_read <- function(
   source = "user",
   exclude = NULL,
-  include = NULL
+  include = NULL,
+  exclude_os_prefs = TRUE
 ) {
   requires_rstudioapi(has_fun = "readRStudioPreference")
   checkmate::assert_character(include, min.len = 1, any.missing = FALSE, null.ok = TRUE)
@@ -298,6 +312,10 @@ rs_prefs_rstudio_read <- function(
   }
 
   all_prefs <- setdiff(all_prefs, exclude)
+
+  if (isTRUE(exclude_os_prefs)) {
+    all_prefs <- rs_prefs_exclude_os_prefs(all_prefs)
+  }
 
   finalize_prefs(prefs[prefs$preference %in% all_prefs, ])
 }
@@ -361,7 +379,13 @@ rs_write_rstudio_preference <- function(name, value, type = NULL, try_again = 2L
   )
 }
 
-rs_prefs_remove_os_settings <- function(pref_names) {
+rs_prefs_exclude_os_prefs <- function(pref_names) {
+  if (is.list(pref_names)) {
+    prefs <- pref_names
+    pref_names <- names(prefs)
+    return(prefs[rs_prefs_exclude_os_prefs(pref_names)])
+  }
+
   # We might want to exclude preferences that are generally system-specific
   ignored <- c(
     "initial_working_directory",

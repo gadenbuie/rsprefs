@@ -12,6 +12,7 @@ rs_prefs_snapshot(
   include = NULL,
   exclude = NULL,
   source = "user",
+  exclude_os_prefs = TRUE,
   overwrite = FALSE,
   preview = FALSE
 )
@@ -19,6 +20,7 @@ rs_prefs_snapshot(
 rs_prefs_snapshot_apply(
   name = NULL,
   path = NULL,
+  exclude_os_prefs = TRUE,
   verbose = FALSE,
   preview = FALSE
 )
@@ -57,6 +59,9 @@ path to \code{git} on your system
 The default is \code{"user"}, since these are the settings you set yourself for
 all projects. You can include any number of sources, or \code{"all"} to include
 all preferences regardless of source.}
+
+\item{exclude_os_prefs}{Excludes operating-system or machine-dependent
+system preferences from the snapshot or the snapshot restore.}
 
 \item{overwrite}{If the snapshot exists, should it be overwritten?}
 
