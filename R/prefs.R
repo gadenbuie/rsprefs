@@ -75,6 +75,7 @@ rs_prefs_user_read <- function(path = NULL) {
 #'   you can later use to identify these particular settings.
 #' * `rs_prefs_snapshot_apply()`: Apply a saved snapshot.
 #' * `rs_prefs_snapshot_list()`: List available snapshots.
+#' * `rs_prefs_snapshot_undo()`: Undo the last applied snapshot.
 #'
 #' @param name The name of the snapshot to save or apply.
 #'
@@ -240,6 +241,20 @@ rs_prefs_snapshot_list <- function(path = NULL, verbose = TRUE) {
   }
 }
 
+#' @rdname rs_prefs_snapshot
+#' @export
+rs_prefs_snapshot_undo <- function(verbose = TRUE) {
+  stack <- ls(.prefs_undo)
+  if (!length(stack)) {
+    cli::cli_alert_warning("Nothing to undo.")
+    return(invisible())
+  }
+  stack <- sort(stack, decreasing = TRUE)
+  last <- .prefs_undo[[stack[[1]]]]
+  on.exit(rm(list = stack[[1]], envir = .prefs_undo))
+  rs_prefs_rstudio_write(last, with_undo = FALSE)
+}
+
 rs_prefs_restore_defaults <- function(verbose = FALSE) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
 
@@ -320,10 +335,16 @@ rs_prefs_rstudio_read <- function(
   finalize_prefs(prefs[prefs$preference %in% all_prefs, ])
 }
 
-rs_prefs_rstudio_write <- function(prefs, verbose = FALSE) {
+
+.prefs_undo <- new.env(parent = emptyenv())
+
+rs_prefs_rstudio_write <- function(prefs, verbose = FALSE, with_undo = TRUE) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
 
   old <- rs_prefs_rstudio_read(include = names(prefs))
+  if (with_undo) {
+    assign(as.character(as.numeric(Sys.time())), old, envir = .prefs_undo)
+  }
   schema <- rstudio_prefs_schema(quiet = TRUE)
 
   updated <- 0

@@ -4,6 +4,7 @@
 \alias{rs_prefs_snapshot}
 \alias{rs_prefs_snapshot_apply}
 \alias{rs_prefs_snapshot_list}
+\alias{rs_prefs_snapshot_undo}
 \title{Snapshot RStudio Preferences}
 \usage{
 rs_prefs_snapshot(
@@ -26,6 +27,8 @@ rs_prefs_snapshot_apply(
 )
 
 rs_prefs_snapshot_list(path = NULL, verbose = TRUE)
+
+rs_prefs_snapshot_undo(verbose = TRUE)
 }
 \arguments{
 \item{name}{The name of the snapshot to save or apply.
@@ -77,6 +80,7 @@ Save named snapshots of your RStudio preferences that you can apply later.
 you can later use to identify these particular settings.
 \item \code{rs_prefs_snapshot_apply()}: Apply a saved snapshot.
 \item \code{rs_prefs_snapshot_list()}: List available snapshots.
+\item \code{rs_prefs_snapshot_undo()}: Undo the last applied snapshot.
 }
 }
 \examples{
