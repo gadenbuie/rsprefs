@@ -255,12 +255,36 @@ rs_prefs_snapshot_undo <- function(verbose = TRUE) {
   rs_prefs_rstudio_write(last, with_undo = FALSE)
 }
 
-rs_prefs_restore_defaults <- function(verbose = FALSE) {
+#' Reset Preferences to the RStudio Default
+#'
+#' Returns currently set preferences to RStudio's original, built-in default.
+#'
+#' @examples
+#' \dontrun{
+#' rs_prefs_reset_defaults()
+#' }
+#'
+#' @inheritParams rs_prefs_snapshot
+#' @inheritDotParams rs_prefs_snapshot include exclude exclude_os_prefs
+#'
+#' @return Resets preferences to their built-in defaults, returning the current
+#'   preferences invisibly as a list. You can also return to the preferences
+#'   prior to `rs_prefs_reset_defaults()` with [rs_prefs_snapshot_undo()].
+#'
+#' @export
+rs_prefs_reset_defaults <- function(
+  source = c("project", "user"),
+  verbose = FALSE,
+  ...
+) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
 
-  old <- rs_prefs_rstudio_read(source = c("project", "user", "computed"))
+  # it doesn't make sense to reset things that are currently defaults
+  source <- setdiff(source, "default")
 
-  schema <- rstudio_prefs_schema()
+  old <- rs_prefs_rstudio_read(source = source, ...)
+
+  schema <- rstudio_prefs_schema(quiet = !verbose)
 
   defaults <- purrr::map(
     purrr::set_names(names(old)),

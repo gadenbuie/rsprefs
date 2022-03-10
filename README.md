@@ -110,7 +110,7 @@ rs_prefs_snapshot_apply(
 #> editor_keybindings: "vim"
 #> editor_theme: "GitHub {rsthemes}"
 #> font_size_points: 12
-#> ... and 26 more
+#> ... and 27 more
 ```
 
 If you apply the snapshot and change your mind, you can roll back the
@@ -159,8 +159,29 @@ rs_prefs_snapshot_apply(
   preview = TRUE
 )
 #> <snapshot "favorite_panes">
-#> panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentation"…
+#> panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentation"]…
 ```
+
+### Reset RStudio’s Defaults
+
+Occasionally, you might want to reset all of your preferences to
+RStudio’s “factory defaults”, for example when teaching or working with
+a beginner. To quickly reset all defaults, call
+
+``` r
+rs_prefs_reset_defaults()
+```
+
+If you want to return to your personal preferences, you can undo the
+change to the defaults with
+
+``` r
+rs_prefs_snapshot_undo()
+```
+
+For a longer-term return to RStudio’s defaults, make sure that you’ve
+taken [a snapshot of your personal preferences](#quick-start) before you
+reset.
 
 ## Explore preferences
 
@@ -187,7 +208,7 @@ rstudio_prefs
 #> save_workspace: "ask"
 #> load_workspace: true
 #> initial_working_directory: ""
-#> cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","seconda…
+#> cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","secondar…
 #> bioconductor_mirror_name: "Seattle (USA)"
 #> bioconductor_mirror_url: "http://www.bioconductor.org"
 #> always_save_history: true

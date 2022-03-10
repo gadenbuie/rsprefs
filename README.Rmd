@@ -144,6 +144,23 @@ rs_prefs_snapshot_apply(
   preview = TRUE
 )
 ```
+
+### Reset RStudio's Defaults
+
+Occasionally, you might want to reset all of your preferences to RStudio's "factory defaults", for example when teaching or working with a beginner.
+To quickly reset all defaults, call
+
+```{r eval=FALSE}
+rs_prefs_reset_defaults()
+```
+
+If you want to return to your personal preferences, you can undo the change to the defaults with 
+
+```{r eval=FALSE}
+rs_prefs_snapshot_undo()
+```
+
+For a longer-term return to RStudio's defaults, make sure that you've taken [a snapshot of your personal preferences](#quick-start) before you reset.
   
 ## Explore preferences
 
