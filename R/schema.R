@@ -33,13 +33,14 @@ rstudio_prefs_schema <- function(version = NULL, quiet = FALSE) {
   }
 
   if (identical(version, v_closest_release[[1]])) {
-    return(rsprefs::rstudio_prefs_v[[names(v_closest_release)[[1]]]])
+    prefs_closest <- rsprefs::rstudio_prefs_v[[names(v_closest_release)[[1]]]]
+    return(augment_rstudio_prefs(prefs_closest))
   }
 
   cache_dir <- rappdirs::user_data_dir("rsprefs")
   path <- fs::path(cache_dir, version, ext = "rds")
   if (fs::file_exists(path)) {
-    return(readRDS(path))
+    return(augment_rstudio_prefs(readRDS(path)))
   }
 
   url <- rstudio_prefs_schema_url(version)
@@ -47,23 +48,35 @@ rstudio_prefs_schema <- function(version = NULL, quiet = FALSE) {
   success <- FALSE
   schema <- NULL
   tryCatch({
-    schema <- rs_prefs_schema_prepare(url, quiet = quiet)
+    schema <- rs_prefs_schema_prepare(url, quiet = TRUE)
     success <- TRUE
   }, error = function(err) {
     v_closest_str <- names(v_closest_release)[[1]]
     if (!quiet) {
+      # only report underlying problem if it isn't a download error
+      err <- if (!identical(match.fun(err$call[[1]]), open.connection)) err
       cli::cli_inform(
-        "Could not download RStudio preference schema for version v{version}, defaulting to {.strong v{v_closest_str}}.",
+        c(
+          "{cli::col_yellow('!')} Using preference schema from RStudio {.strong v{v_closest_str}}",
+          "x" = "Schema for current version v{version} is not available online (or is not different)."
+        ),
         parent = err
       )
     }
     schema <<- rsprefs::rstudio_prefs_v[[v_closest_str]]
   })
 
+
   if (success) {
+    # if we downloaded a schema, stash it for later
     fs::dir_create(fs::path_dir(path), recurse = TRUE)
     saveRDS(schema, path)
   }
+
+  if (!is.null(schema)) {
+    schema <- augment_rstudio_prefs(schema)
+  }
+
   schema
 }
 

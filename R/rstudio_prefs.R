@@ -37,6 +37,19 @@ factory_pref_toggle <- function(x) {
   }
 }
 
+augment_rstudio_prefs <- function(prefs) {
+  prefs <- lapply(prefs, function(x) {
+    x$get <- factory_pref_get(x)
+    x$set <- factory_pref_set(x)
+    if (identical(tolower(x$type), "boolean")) {
+      x$toggle <- factory_pref_toggle(x)
+    }
+    x
+  })
+
+  as_rs_pref_list(prefs)
+}
+
 #' rstudio_prefs
 #'
 #' @description
@@ -46,21 +59,9 @@ factory_pref_toggle <- function(x) {
 #'
 #' @format `r rd_describe_schema(rstudio_prefs)`
 #' @export
-rstudio_prefs <- local({
-  .rstudio_prefs <- readRDS(system.file("rstudio_prefs.rds", package = "rsprefs"))
-
-  .rstudio_prefs <- lapply(.rstudio_prefs, function(x) {
-    x$get <- factory_pref_get(x)
-    x$set <- factory_pref_set(x)
-    if (identical(tolower(x$type), "boolean")) {
-      x$toggle <- factory_pref_toggle(x)
-    }
-    x
-  })
-
-  as_rs_pref_list(.rstudio_prefs)
-})
-
+rstudio_prefs <- augment_rstudio_prefs(
+  readRDS(system.file("rstudio_prefs.rds", package = "rsprefs"))
+)
 
 #' rstudio_prefs_v
 #'
