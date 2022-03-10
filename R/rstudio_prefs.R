@@ -45,10 +45,11 @@ factory_pref_toggle <- function(x) {
 #' @source <https://github.com/rstudio/rstudio/raw/main/src/cpp/session/resources/schema/user-prefs-schema.json>
 #'
 #' @format `r rd_describe_schema(rstudio_prefs)`
+#' @export
 rstudio_prefs <- local({
   .rstudio_prefs <- readRDS(system.file("rstudio_prefs.rds", package = "rsprefs"))
 
-  lapply(.rstudio_prefs, function(x) {
+  .rstudio_prefs <- lapply(.rstudio_prefs, function(x) {
     x$get <- factory_pref_get(x)
     x$set <- factory_pref_set(x)
     if (identical(tolower(x$type), "boolean")) {
@@ -56,6 +57,8 @@ rstudio_prefs <- local({
     }
     x
   })
+
+  as_rs_pref_list(.rstudio_prefs)
 })
 
 
