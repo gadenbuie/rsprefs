@@ -18,13 +18,17 @@ You can install the development version of rsprefs from
 remotes::install_github("gadenbuie/rsprefs")
 ```
 
+``` r
+library(rsprefs)
+```
+
 ## Quick Start
 
 1.  Snapshot your RStudio preferences to a new GitHub gist. Set
     `path = "new private gist"` to keep your preferences private.
 
     ``` r
-    rsprefs::rs_prefs_snapshot(name = "sync", path = "new gist")
+    rs_prefs_snapshot(name = "sync", path = "new gist")
     ```
 
         ✓ Created gist with id 96e8c7f0a624bfed8018987185feb30b
@@ -43,14 +47,14 @@ remotes::install_github("gadenbuie/rsprefs")
     using the gist ID found from the global option.
 
     ``` r
-    rsprefs::rs_prefs_snapshot("sync", overwrite = TRUE)
+    rs_prefs_snapshot("sync", overwrite = TRUE)
     ```
 
 4.  On a different computer or session, setup the `rsprefs.gist_id`
     option and then apply your snapshot.
 
     ``` r
-    rsprefs::rs_prefs_snapshot_apply("sync")
+    rs_prefs_snapshot_apply("sync")
     ```
 
 ## Manage Your RStudio Preferences
@@ -72,7 +76,7 @@ Here I’ll take a snapshot of my current preferences.
 ``` r
 tmp_snap <- "tmp_snap.json"
 
-rsprefs::rs_prefs_snapshot("demo", path = tmp_snap)
+rs_prefs_snapshot("demo", path = tmp_snap)
 #> ℹ Writing snapshot demo to 'tmp_snap.json'✓ Writing snapshot demo to 'tmp_snap.json' ... done
 ```
 
@@ -80,7 +84,7 @@ You can list available preference snapshots with
 `rs_prefs_snapshot_list()`
 
 ``` r
-rsprefs::rs_prefs_snapshot_list(path = tmp_snap)
+rs_prefs_snapshot_list(path = tmp_snap)
 #> Snapshot: 'tmp_snap.json'
 #> • demo
 ```
@@ -90,7 +94,7 @@ or you can apply the preferences in a snapshot with
 preview the preferences included in the snapshot without applying them.)
 
 ``` r
-rsprefs::rs_prefs_snapshot_apply(
+rs_prefs_snapshot_apply(
   name = "demo", 
   path = tmp_snap, 
   preview = TRUE
@@ -104,9 +108,9 @@ rsprefs::rs_prefs_snapshot_apply(
 #> doc_outline_show: "sections_and_chunks"
 #> document_author: "Luke Skywalker"
 #> editor_keybindings: "vim"
-#> editor_theme: "Horizon Dark {rsthemes}"
-#> fold_style: "begin-and-end"
-#> ... and 30 more
+#> editor_theme: "GitHub {rsthemes}"
+#> font_size_points: 12
+#> ... and 25 more
 ```
 
 ### Choose which preferences to include in the snapshot
@@ -139,20 +143,20 @@ For example, you could store your favorite pane layout as
 `"favorite_panes"`:
 
 ``` r
-rsprefs::rs_prefs_snapshot(
+rs_prefs_snapshot(
   name = "favorite_panes", 
   path = tmp_snap,
   include = "panes"
 )
 #> ℹ Writing snapshot favorite_panes to 'tmp_snap.json'✓ Writing snapshot favorite_panes to 'tmp_snap.json' ... done
 
-rsprefs::rs_prefs_snapshot_apply(
+rs_prefs_snapshot_apply(
   name = "favorite_panes",
   path = tmp_snap,
   preview = TRUE
 )
 #> <snapshot "favorite_panes">
-#> panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages"…
+#> panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentation"…
 ```
 
 ## Explore preferences
@@ -161,29 +165,26 @@ You can obtain a list of available preferences for your version of
 RStudio using:
 
 ``` r
-rsprefs::rstudio_prefs_schema(quiet = TRUE)
-#> run_rprofile_on_resume: false
-#> save_workspace: "ask"
-#> load_workspace: true
-#> initial_working_directory: ""
-#> cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country…
-#> bioconductor_mirror_name: "Seattle (USA)"
-#> bioconductor_mirror_url: "http://www.bioconductor.org"
-#> always_save_history: true
-#> remove_history_duplicates: false
-#> show_last_dot_value: false
-#> ... and 220 more
+schema <- rstudio_prefs_schema()
+#> ! Using preference schema from RStudio v2022.02.0+443
+#> x Schema for current version v2022.6.0.195 is not available online (or is not different). 
 ```
 
-Or you can use the preferences for the latest version
+rsprefs includes the preference information for RStudio releases since
+1.3.959. If you’re using dailies or preview versions fo RStudio, rsprefs
+will attempt to download the schema that matches your version, falling
+back to the latest version if one is not available.
+
+For quick reference, the latest preference details are included in the
+`rstudio_prefs` object.
 
 ``` r
-rsprefs::rstudio_prefs
+rstudio_prefs
 #> run_rprofile_on_resume: false
 #> save_workspace: "ask"
 #> load_workspace: true
 #> initial_working_directory: ""
-#> cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country…
+#> cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","seconda…
 #> bioconductor_mirror_name: "Seattle (USA)"
 #> bioconductor_mirror_url: "http://www.bioconductor.org"
 #> always_save_history: true
@@ -196,7 +197,7 @@ This list contains detailed information about every preference, so you
 can use autocomplete to explore the preferences.
 
 ``` r
-rsprefs::rstudio_prefs$highlight_r_function_calls
+rstudio_prefs$highlight_r_function_calls
 #> <highlight_r_function_calls>
 #> Whether to highlight R function calls in the code editor.
 #> Type: boolean
@@ -205,7 +206,7 @@ rsprefs::rstudio_prefs$highlight_r_function_calls
 ```
 
 ``` r
-rsprefs::rstudio_prefs$insert_native_pipe_operator
+rstudio_prefs$insert_native_pipe_operator
 #> <insert_native_pipe_operator>
 #> Whether the Insert Pipe Operator command should insert the native R pipe operator, |>
 #> Type: boolean
@@ -218,18 +219,18 @@ and toggle preferences:
 
 ``` r
 # $get() current preference value
-original <- rsprefs::rstudio_prefs$insert_native_pipe_operator$get()
+original <- rstudio_prefs$insert_native_pipe_operator$get()
 original
 #> [1] FALSE
 
 # $toggle() boolean preferences
-rsprefs::rstudio_prefs$insert_native_pipe_operator$toggle()
+rstudio_prefs$insert_native_pipe_operator$toggle()
 #> ✓ Enabled insert_native_pipe_operator
 
 # $set() the preference directly
-rsprefs::rstudio_prefs$insert_native_pipe_operator$set(original)
+rstudio_prefs$insert_native_pipe_operator$set(original)
 
 # check that we've come full circle
-rsprefs::rstudio_prefs$insert_native_pipe_operator$get()
+rstudio_prefs$insert_native_pipe_operator$get()
 #> [1] FALSE
 ```

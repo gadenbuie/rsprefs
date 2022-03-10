@@ -29,13 +29,17 @@ You can install the development version of rsprefs from [GitHub](https://github.
 remotes::install_github("gadenbuie/rsprefs")
 ```
 
+```{r library}
+library(rsprefs)
+```
+
 ## Quick Start
 
 1. Snapshot your RStudio preferences to a new GitHub gist.
    Set `path = "new private gist"` to keep your preferences private.
    
    ```r
-   rsprefs::rs_prefs_snapshot(name = "sync", path = "new gist")
+   rs_prefs_snapshot(name = "sync", path = "new gist")
    ```
    ```
    ✓ Created gist with id 96e8c7f0a624bfed8018987185feb30b
@@ -53,13 +57,13 @@ remotes::install_github("gadenbuie/rsprefs")
 3. If you change your preferences you can update your snapshot by name, using the gist ID found from the global option.
 
    ```r
-   rsprefs::rs_prefs_snapshot("sync", overwrite = TRUE)
+   rs_prefs_snapshot("sync", overwrite = TRUE)
    ```
    
 4. On a different computer or session, setup the `rsprefs.gist_id` option and then apply your snapshot.
 
    ```r
-   rsprefs::rs_prefs_snapshot_apply("sync")
+   rs_prefs_snapshot_apply("sync")
    ```
 
 ## Manage Your RStudio Preferences
@@ -79,20 +83,20 @@ Here I'll take a snapshot of my current preferences.
 ```{r}
 tmp_snap <- "tmp_snap.json"
 
-rsprefs::rs_prefs_snapshot("demo", path = tmp_snap)
+rs_prefs_snapshot("demo", path = tmp_snap)
 ```
 
 You can list available preference snapshots with `rs_prefs_snapshot_list()`
 
 ```{r}
-rsprefs::rs_prefs_snapshot_list(path = tmp_snap)
+rs_prefs_snapshot_list(path = tmp_snap)
 ```
 
 or you can apply the preferences in a snapshot with `rs_prefs_snapshot_apply()`.
 (You can also set `preview = TRUE` to preview the preferences included in the snapshot without applying them.)
 
 ```{r local-prefs-preview}
-rsprefs::rs_prefs_snapshot_apply(
+rs_prefs_snapshot_apply(
   name = "demo", 
   path = tmp_snap, 
   preview = TRUE
@@ -125,13 +129,13 @@ There are three arguments that control which preferences are included:
 For example, you could store your favorite pane layout as `"favorite_panes"`:
 
 ```{r local-prefs-panes}
-rsprefs::rs_prefs_snapshot(
+rs_prefs_snapshot(
   name = "favorite_panes", 
   path = tmp_snap,
   include = "panes"
 )
 
-rsprefs::rs_prefs_snapshot_apply(
+rs_prefs_snapshot_apply(
   name = "favorite_panes",
   path = tmp_snap,
   preview = TRUE
@@ -143,40 +147,43 @@ rsprefs::rs_prefs_snapshot_apply(
 You can obtain a list of available preferences for your version of RStudio using:
 
 ```{r}
-rsprefs::rstudio_prefs_schema(quiet = TRUE)
+schema <- rstudio_prefs_schema()
 ```
 
-Or you can use the preferences for the latest version
+rsprefs includes the preference information for RStudio releases since 1.3.959.
+If you're using dailies or preview versions fo RStudio, rsprefs will attempt to download the schema that matches your version, falling back to the latest version if one is not available.
 
-```{r}
-rsprefs::rstudio_prefs
+For quick reference, the latest preference details are included in the `rstudio_prefs` object.
+
+```{r rstudio_prefs}
+rstudio_prefs
 ```
 
 This list contains detailed information about every preference, so you can use autocomplete to explore the preferences.
 
 ```{r}
-rsprefs::rstudio_prefs$highlight_r_function_calls
+rstudio_prefs$highlight_r_function_calls
 ```
 
 ```{r}
-rsprefs::rstudio_prefs$insert_native_pipe_operator
+rstudio_prefs$insert_native_pipe_operator
 ```
 
 The `rstudio_prefs` object also comes with helper functions to get, set and toggle preferences:
 
 ```{r get-set-toggle-helpers}
 # $get() current preference value
-original <- rsprefs::rstudio_prefs$insert_native_pipe_operator$get()
+original <- rstudio_prefs$insert_native_pipe_operator$get()
 original
 
 # $toggle() boolean preferences
-rsprefs::rstudio_prefs$insert_native_pipe_operator$toggle()
+rstudio_prefs$insert_native_pipe_operator$toggle()
 
 # $set() the preference directly
-rsprefs::rstudio_prefs$insert_native_pipe_operator$set(original)
+rstudio_prefs$insert_native_pipe_operator$set(original)
 
 # check that we've come full circle
-rsprefs::rstudio_prefs$insert_native_pipe_operator$get()
+rstudio_prefs$insert_native_pipe_operator$get()
 ```
 
 ```{r include=FALSE}
