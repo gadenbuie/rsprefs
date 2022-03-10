@@ -143,20 +143,41 @@ rsprefs::rs_prefs_snapshot_apply(
 You can obtain a list of available preferences for your version of RStudio using:
 
 ```{r}
-schema <- rsprefs::rstudio_prefs_schema()
-schema
+rsprefs::rstudio_prefs_schema(quiet = TRUE)
+```
+
+Or you can use the preferences for the latest version
+
+```{r}
+rsprefs::rstudio_prefs
 ```
 
 This list contains detailed information about every preference, so you can use autocomplete to explore the preferences.
 
 ```{r}
-schema$highlight_r_function_calls
+rsprefs::rstudio_prefs$highlight_r_function_calls
 ```
 
 ```{r}
-schema$insert_native_pipe_operator
+rsprefs::rstudio_prefs$insert_native_pipe_operator
 ```
 
+The `rstudio_prefs` object also comes with helper functions to get, set and toggle preferences:
+
+```{r get-set-toggle-helpers}
+# $get() current preference value
+original <- rsprefs::rstudio_prefs$insert_native_pipe_operator$get()
+original
+
+# $toggle() boolean preferences
+rsprefs::rstudio_prefs$insert_native_pipe_operator$toggle()
+
+# $set() the preference directly
+rsprefs::rstudio_prefs$insert_native_pipe_operator$set(original)
+
+# check that we've come full circle
+rsprefs::rstudio_prefs$insert_native_pipe_operator$get()
+```
 
 ```{r include=FALSE}
 fs::file_delete(tmp_snap)
