@@ -54,7 +54,8 @@ library(rsprefs)
   
 2. Open your `~/.Rprofile` using `usethis::edit_r_profile()` and add the `rsprefs.gist_id` option from the output above.
 
-3. If you change your preferences you can update your snapshot by name, using the gist ID found from the global option.
+3. If you change your IDE preferences you can update your snapshot by name,
+   using the gist ID found from the global option.
 
    ```r
    rs_prefs_snapshot("sync", overwrite = TRUE)
@@ -102,6 +103,8 @@ rs_prefs_snapshot_apply(
   preview = TRUE
 )
 ```
+
+If you apply the snapshot and change your mind, you can roll back the changes from the snapshot by calling `rs_prefs_snapshot_undo()`.
 
 ### Choose which preferences to include in the snapshot
 
