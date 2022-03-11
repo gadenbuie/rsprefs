@@ -22,7 +22,7 @@ Imports:
     rappdirs,
     rlang,
     rstudioapi
-Config/Needs/website: github::gadenbuie/grkgdown
+Config/Needs/website: gadenbuie/grkgdown
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
