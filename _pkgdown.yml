@@ -1,0 +1,16 @@
+url: http://pkg.garrickadenbuie.com/rsprefs
+
+template:
+  package: grkgdown
+
+reference:
+- title: Snapshots
+  description: Snapshot user preferences and configuration or use existing snapshots.
+  contents:
+  - '`snapshot_prefs`'
+- title: RStudio Preferences
+  contents:
+  - '`prefs_reset_defaults`'
+  - '`prefs_schema`'
+  - '`prefs_rstudio`'
+  - '`prefs_rstudio_v`'

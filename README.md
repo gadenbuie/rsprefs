@@ -28,7 +28,7 @@ library(rsprefs)
     `path = "new private gist"` to keep your preferences private.
 
     ``` r
-    rs_prefs_snapshot(name = "sync", path = "new gist")
+    snapshot_prefs_save(name = "sync", path = "new gist")
     ```
 
         ✓ Created gist with id 96e8c7f0a624bfed8018987185feb30b
@@ -47,14 +47,14 @@ library(rsprefs)
     name, using the gist ID found from the global option.
 
     ``` r
-    rs_prefs_snapshot("sync", overwrite = TRUE)
+    snapshot_prefs_save("sync", overwrite = TRUE)
     ```
 
 4.  On a different computer or session, setup the `rsprefs.gist_id`
     option and then apply your snapshot.
 
     ``` r
-    rs_prefs_snapshot_apply("sync")
+    snapshot_prefs_use("sync")
     ```
 
 ## Manage Your RStudio Preferences
@@ -76,25 +76,24 @@ Here I’ll take a snapshot of my current preferences.
 ``` r
 tmp_snap <- "tmp_snap.json"
 
-rs_prefs_snapshot("demo", path = tmp_snap)
+snapshot_prefs_save("demo", path = tmp_snap)
 #> ℹ Writing snapshot demo to 'tmp_snap.json'✓ Writing snapshot demo to 'tmp_snap.json' ... done
 ```
 
-You can list available preference snapshots with
-`rs_prefs_snapshot_list()`
+You can list available preference snapshots with `snapshot_prefs_list()`
 
 ``` r
-rs_prefs_snapshot_list(path = tmp_snap)
+snapshot_prefs_list(path = tmp_snap)
 #> Snapshot: 'tmp_snap.json'
 #> • demo
 ```
 
 or you can apply the preferences in a snapshot with
-`rs_prefs_snapshot_apply()`. (You can also set `preview = TRUE` to
-preview the preferences included in the snapshot without applying them.)
+`snapshot_prefs_use()`. (You can also set `preview = TRUE` to preview
+the preferences included in the snapshot without applying them.)
 
 ``` r
-rs_prefs_snapshot_apply(
+snapshot_prefs_use(
   name = "demo", 
   path = tmp_snap, 
   preview = TRUE
@@ -108,13 +107,13 @@ rs_prefs_snapshot_apply(
 #> doc_outline_show: "sections_and_chunks"
 #> document_author: "Luke Skywalker"
 #> editor_keybindings: "vim"
-#> editor_theme: "GitHub {rsthemes}"
+#> editor_theme: "Horizon Dark {rsthemes}"
 #> font_size_points: 12
-#> ... and 27 more
+#> ... and 26 more
 ```
 
 If you apply the snapshot and change your mind, you can roll back the
-changes from the snapshot by calling `rs_prefs_snapshot_undo()`.
+changes from the snapshot by calling `snapshot_prefs_undo()`.
 
 ### Choose which preferences to include in the snapshot
 
@@ -146,20 +145,20 @@ For example, you could store your favorite pane layout as
 `"favorite_panes"`:
 
 ``` r
-rs_prefs_snapshot(
+snapshot_prefs_save(
   name = "favorite_panes", 
   path = tmp_snap,
   include = "panes"
 )
 #> ℹ Writing snapshot favorite_panes to 'tmp_snap.json'✓ Writing snapshot favorite_panes to 'tmp_snap.json' ... done
 
-rs_prefs_snapshot_apply(
+snapshot_prefs_use(
   name = "favorite_panes",
   path = tmp_snap,
   preview = TRUE
 )
 #> <snapshot "favorite_panes">
-#> panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentation"]…
+#> panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentation"],"tabSet2":["Environm…
 ```
 
 ### Reset RStudio’s Defaults
@@ -169,14 +168,14 @@ RStudio’s “factory defaults”, for example when teaching or working with
 a beginner. To quickly reset all defaults, call
 
 ``` r
-rs_prefs_reset_defaults()
+prefs_reset_defaults()
 ```
 
 If you want to return to your personal preferences, you can undo the
 change to the defaults with
 
 ``` r
-rs_prefs_snapshot_undo()
+snapshot_prefs_undo()
 ```
 
 For a longer-term return to RStudio’s defaults, make sure that you’ve
@@ -189,7 +188,7 @@ You can obtain a list of available preferences for your version of
 RStudio using:
 
 ``` r
-schema <- rstudio_prefs_schema()
+schema <- prefs_schema()
 #> ! Using preference schema from RStudio v2022.02.0+443
 #> x Schema for current version v2022.6.0.195 is not available online (or is not different). 
 ```
@@ -200,15 +199,15 @@ will attempt to download the schema that matches your version, falling
 back to the latest version if one is not available.
 
 For quick reference, the latest preference details are included in the
-`rstudio_prefs` object.
+`prefs_rstudio` object.
 
 ``` r
-rstudio_prefs
+prefs_rstudio
 #> run_rprofile_on_resume: false
 #> save_workspace: "ask"
 #> load_workspace: true
 #> initial_working_directory: ""
-#> cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","secondar…
+#> cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","secondary":""}
 #> bioconductor_mirror_name: "Seattle (USA)"
 #> bioconductor_mirror_url: "http://www.bioconductor.org"
 #> always_save_history: true
@@ -221,7 +220,7 @@ This list contains detailed information about every preference, so you
 can use autocomplete to explore the preferences.
 
 ``` r
-rstudio_prefs$highlight_r_function_calls
+prefs_rstudio$highlight_r_function_calls
 #> <highlight_r_function_calls>
 #> Whether to highlight R function calls in the code editor.
 #> Type: boolean
@@ -230,7 +229,7 @@ rstudio_prefs$highlight_r_function_calls
 ```
 
 ``` r
-rstudio_prefs$insert_native_pipe_operator
+prefs_rstudio$insert_native_pipe_operator
 #> <insert_native_pipe_operator>
 #> Whether the Insert Pipe Operator command should insert the native R pipe operator, |>
 #> Type: boolean
@@ -238,23 +237,23 @@ rstudio_prefs$insert_native_pipe_operator
 #> Current: false
 ```
 
-The `rstudio_prefs` object also comes with helper functions to get, set
+The `prefs_rstudio` object also comes with helper functions to get, set
 and toggle preferences:
 
 ``` r
 # $get() current preference value
-original <- rstudio_prefs$insert_native_pipe_operator$get()
+original <- prefs_rstudio$insert_native_pipe_operator$get()
 original
 #> [1] FALSE
 
 # $toggle() boolean preferences
-rstudio_prefs$insert_native_pipe_operator$toggle()
+prefs_rstudio$insert_native_pipe_operator$toggle()
 #> ✓ Enabled insert_native_pipe_operator
 
 # $set() the preference directly
-rstudio_prefs$insert_native_pipe_operator$set(original)
+prefs_rstudio$insert_native_pipe_operator$set(original)
 
 # check that we've come full circle
-rstudio_prefs$insert_native_pipe_operator$get()
+prefs_rstudio$insert_native_pipe_operator$get()
 #> [1] FALSE
 ```
