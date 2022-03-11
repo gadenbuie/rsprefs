@@ -151,7 +151,7 @@ Occasionally, you might want to reset all of your preferences to RStudio's "fact
 To quickly reset all defaults, call
 
 ```{r eval=FALSE}
-rs_prefs_reset_defaults()
+prefs_reset_defaults()
 ```
 
 If you want to return to your personal preferences, you can undo the change to the defaults with 
@@ -167,7 +167,7 @@ For a longer-term return to RStudio's defaults, make sure that you've taken [a s
 You can obtain a list of available preferences for your version of RStudio using:
 
 ```{r}
-schema <- rstudio_prefs_schema()
+schema <- prefs_schema()
 ```
 
 rsprefs includes the preference information for RStudio releases since 1.3.959.

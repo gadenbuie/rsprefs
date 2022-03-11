@@ -13,10 +13,10 @@
 #' @param quiet Suppress console messages and output
 #'
 #' @examples
-#' rstudio_prefs_schema("2021.09.0+351")
+#' prefs_schema("2021.09.0+351")
 #'
 #' @export
-rstudio_prefs_schema <- function(version = NULL, quiet = FALSE) {
+prefs_schema <- function(version = NULL, quiet = FALSE) {
   if (!is.null(version) && version %in% names(rsprefs::rstudio_prefs_v)) {
     return(rsprefs::rstudio_prefs_v[[version]])
   }
@@ -43,12 +43,12 @@ rstudio_prefs_schema <- function(version = NULL, quiet = FALSE) {
     return(augment_rstudio_prefs(readRDS(path)))
   }
 
-  url <- rstudio_prefs_schema_url(version)
+  url <- prefs_schema_url(version)
 
   success <- FALSE
   schema <- NULL
   tryCatch({
-    schema <- rs_prefs_schema_prepare(url, quiet = TRUE)
+    schema <- prefs_schema_prepare(url, quiet = TRUE)
     success <- TRUE
   }, error = function(err) {
     v_closest_str <- names(v_closest_release)[[1]]
@@ -80,7 +80,7 @@ rstudio_prefs_schema <- function(version = NULL, quiet = FALSE) {
   schema
 }
 
-rstudio_prefs_schema_url <- function(tag) {
+prefs_schema_url <- function(tag) {
   if (tag == "latest") {
     tag <- "main"
   } else if (grepl("^\\d", tag) && !grepl("^v", tag)) {
@@ -120,7 +120,7 @@ rstudio_closest_release <- function(version = NULL) {
   releases[length(releases)]
 }
 
-rs_prefs_schema_prepare <- function(url, quiet = TRUE) {
+prefs_schema_prepare <- function(url, quiet = TRUE) {
   rsp_schema <-
     if (grepl("\n", url)) {
       tmpfile <- tempfile(fileext = ".json")

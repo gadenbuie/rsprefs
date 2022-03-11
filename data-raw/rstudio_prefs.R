@@ -38,7 +38,7 @@ rstudio_prefs <-
   map(function(content) {
     content <- base64enc::base64decode(content)
     content <- rawToChar(content)
-    rs_prefs_schema_prepare(content)
+    prefs_schema_prepare(content)
   })
 
 rstudio_prefs_v <- rstudio_prefs[setdiff(names(rstudio_prefs), "latest")]

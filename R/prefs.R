@@ -67,7 +67,7 @@ snapshot_prefs_save <- function(
   requires_rstudioapi(has_fun = "readRStudioPreference")
 
   if (isTRUE(preview) || is.null(name)) {
-    prefs <- rs_prefs_rstudio_read(source = source, include = include, exclude = exclude)
+    prefs <- prefs_rstudio_read(source = source, include = include, exclude = exclude)
     return(as_rs_pref_list(prefs, name = if (!missing(name)) name))
   }
 
@@ -77,12 +77,12 @@ snapshot_prefs_save <- function(
     cli::cli_abort("Cannot snapshot to a URL, please provide a local {.code path} or a {.emph gist id}")
   }
 
-  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+  path <- path %||% prefs_gist_default() %||% prefs_user_path_default()
   path <- maybe_gist(path)
 
   snaps_all <-
     if (is_gist(path) || fs::file_exists(path)) {
-      rs_prefs_user_read(path)
+      prefs_user_read(path)
     }  else {
       list()
     }
@@ -91,7 +91,7 @@ snapshot_prefs_save <- function(
     cli::cli_abort("Snapshot {.field {name}} exists and {.code overwrite} is not {.code TRUE}")
   }
 
-  prefs_snap <- rs_prefs_rstudio_read(
+  prefs_snap <- prefs_rstudio_read(
     source = source,
     include = include,
     exclude = exclude,
@@ -105,7 +105,7 @@ snapshot_prefs_save <- function(
     cli::cli_process_start("Writing snapshot {.field {name}} to {.path {path}}")
   }
   snaps_all[[name]] <- prefs_snap
-  rs_prefs_user_write(snaps_all, path = path)
+  prefs_user_write(snaps_all, path = path)
 }
 
 #' @rdname snapshot_prefs
@@ -118,7 +118,7 @@ snapshot_prefs_use <- function(
   preview = FALSE
 ) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
-  snaps <- rs_prefs_user_read(path)
+  snaps <- prefs_user_read(path)
 
   if (is.null(name)) {
     return(snapshot_prefs_list(path, verbose = missing(verbose) || verbose))
@@ -151,19 +151,19 @@ snapshot_prefs_use <- function(
   }
 
   if (isTRUE(exclude_os_prefs)) {
-    snap <- rs_prefs_exclude_os_prefs(snap)
+    snap <- prefs_exclude_os_prefs(snap)
   }
 
-  rs_prefs_rstudio_write(snap, verbose = verbose)
+  prefs_rstudio_write(snap, verbose = verbose)
 }
 
 #' @rdname snapshot_prefs
 #' @export
 snapshot_prefs_list <- function(path = NULL, verbose = TRUE) {
-  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+  path <- path %||% prefs_gist_default() %||% prefs_user_path_default()
   path <- maybe_gist(path)
 
-  snaps <- rs_prefs_user_read(path)
+  snaps <- prefs_user_read(path)
 
   if (verbose) {
     if (is_gist(path)) {
@@ -189,7 +189,7 @@ snapshot_prefs_undo <- function(verbose = TRUE) {
   stack <- sort(stack, decreasing = TRUE)
   last <- .prefs_undo[[stack[[1]]]]
   on.exit(rm(list = stack[[1]], envir = .prefs_undo))
-  rs_prefs_rstudio_write(last, with_undo = FALSE)
+  prefs_rstudio_write(last, with_undo = FALSE)
 }
 
 #' Reset Preferences to the RStudio Default
@@ -198,7 +198,7 @@ snapshot_prefs_undo <- function(verbose = TRUE) {
 #'
 #' @examples
 #' \dontrun{
-#' rs_prefs_reset_defaults()
+#' prefs_reset_defaults()
 #' }
 #'
 #' @inheritParams snapshot_prefs_save
@@ -206,10 +206,10 @@ snapshot_prefs_undo <- function(verbose = TRUE) {
 #'
 #' @return Resets preferences to their built-in defaults, returning the current
 #'   preferences invisibly as a list. You can also return to the preferences
-#'   prior to `rs_prefs_reset_defaults()` with [snapshot_prefs_undo()].
+#'   prior to `prefs_reset_defaults()` with [snapshot_prefs_undo()].
 #'
 #' @export
-rs_prefs_reset_defaults <- function(
+prefs_reset_defaults <- function(
   source = c("project", "user"),
   verbose = FALSE,
   ...
@@ -219,9 +219,9 @@ rs_prefs_reset_defaults <- function(
   # it doesn't make sense to reset things that are currently defaults
   source <- setdiff(source, "default")
 
-  old <- rs_prefs_rstudio_read(source = source, ...)
+  old <- prefs_rstudio_read(source = source, ...)
 
-  schema <- rstudio_prefs_schema(quiet = !verbose)
+  schema <- prefs_schema(quiet = !verbose)
 
   defaults <- purrr::map(
     purrr::set_names(names(old)),
@@ -230,28 +230,28 @@ rs_prefs_reset_defaults <- function(
 
   defaults <- purrr::compact(defaults)
 
-  rs_prefs_rstudio_write(defaults, verbose = verbose)
+  prefs_rstudio_write(defaults, verbose = verbose)
 
   invisible(old)
 }
 
 
-rs_prefs_user_path_default <- function() {
+prefs_user_path_default <- function() {
   fs::path(
     rappdirs::user_config_dir("rsprefs"),
     "user-prefs.json"
   )
 }
 
-rs_prefs_gist_default <- function() {
+prefs_gist_default <- function() {
   getOption("rsprefs.gist_id", NULL)
 }
 
-rs_prefs_user_write <- function(
-  prefs = rs_prefs_user_read(),
+prefs_user_write <- function(
+  prefs = prefs_user_read(),
   path = NULL
 ) {
-  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+  path <- path %||% prefs_gist_default() %||% prefs_user_path_default()
 
   gist <- maybe_gist(path)
   if (is_gist(gist)) {
@@ -273,7 +273,7 @@ rs_prefs_user_write <- function(
   }
 
   if (is.null(path)) {
-    path <- rs_prefs_user_path_default()
+    path <- prefs_user_path_default()
     cli::cli_process_start(
       path,
       msg_done = path,
@@ -288,8 +288,8 @@ rs_prefs_user_write <- function(
   invisible(prefs)
 }
 
-rs_prefs_user_read <- function(path = NULL) {
-  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+prefs_user_read <- function(path = NULL) {
+  path <- path %||% prefs_gist_default() %||% prefs_user_path_default()
 
   gist <- maybe_gist(path)
   if (is_gist(gist)) {
@@ -318,7 +318,7 @@ rstudio_all_prefs <- function() {
   })
 }
 
-rs_prefs_rstudio_read <- function(
+prefs_rstudio_read <- function(
   source = "user",
   exclude = NULL,
   include = NULL,
@@ -359,7 +359,7 @@ rs_prefs_rstudio_read <- function(
   all_prefs <- setdiff(all_prefs, exclude)
 
   if (isTRUE(exclude_os_prefs)) {
-    all_prefs <- rs_prefs_exclude_os_prefs(all_prefs)
+    all_prefs <- prefs_exclude_os_prefs(all_prefs)
   }
 
   finalize_prefs(prefs[prefs$preference %in% all_prefs, ])
@@ -368,14 +368,14 @@ rs_prefs_rstudio_read <- function(
 
 .prefs_undo <- new.env(parent = emptyenv())
 
-rs_prefs_rstudio_write <- function(prefs, verbose = FALSE, with_undo = TRUE) {
+prefs_rstudio_write <- function(prefs, verbose = FALSE, with_undo = TRUE) {
   requires_rstudioapi(has_fun = "writeRStudioPreference")
 
-  old <- rs_prefs_rstudio_read(include = names(prefs))
+  old <- prefs_rstudio_read(include = names(prefs))
   if (with_undo) {
     assign(as.character(as.numeric(Sys.time())), old, envir = .prefs_undo)
   }
-  schema <- rstudio_prefs_schema(quiet = TRUE)
+  schema <- prefs_schema(quiet = TRUE)
 
   updated <- 0
   for (name in names(prefs)) {
@@ -405,7 +405,7 @@ rs_prefs_rstudio_write <- function(prefs, verbose = FALSE, with_undo = TRUE) {
 
 rs_write_rstudio_preference <- function(name, value, type = NULL, try_again = 2L) {
   cast <- switch(
-    type %||% rstudio_prefs_schema(quiet = TRUE)[[name]][["type"]],
+    type %||% prefs_schema(quiet = TRUE)[[name]][["type"]],
     integer = as.integer,
     real = ,
     number = as.double,
@@ -430,11 +430,11 @@ rs_write_rstudio_preference <- function(name, value, type = NULL, try_again = 2L
   )
 }
 
-rs_prefs_exclude_os_prefs <- function(pref_names) {
+prefs_exclude_os_prefs <- function(pref_names) {
   if (is.list(pref_names)) {
     prefs <- pref_names
     pref_names <- names(prefs)
-    return(prefs[rs_prefs_exclude_os_prefs(pref_names)])
+    return(prefs[prefs_exclude_os_prefs(pref_names)])
   }
 
   # We might want to exclude preferences that are generally system-specific

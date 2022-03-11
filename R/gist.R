@@ -68,7 +68,7 @@ gist_get <- function(gist) {
 gist_prefs_read <- function(gist = NULL) {
   gh_has_gist_scope()
 
-  gist <- maybe_gist(gist %||% rs_prefs_gist_default())
+  gist <- maybe_gist(gist %||% prefs_gist_default())
   stopifnot(is_gist(gist))
 
   x <- gist_get(gist)
@@ -92,7 +92,7 @@ gist_prefs_read <- function(gist = NULL) {
 gist_prefs_write <- function(prefs, gist = NULL) {
   gh_has_gist_scope()
 
-  gist <- maybe_gist(gist %||% rs_prefs_gist_default())
+  gist <- maybe_gist(gist %||% prefs_gist_default())
   stopifnot(is_gist(gist))
 
   x <- gist_get(gist)

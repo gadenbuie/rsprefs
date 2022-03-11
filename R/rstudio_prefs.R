@@ -16,7 +16,7 @@ factory_pref_set <- function(x) {
 factory_pref_get <- function(x) {
   force(x)
   function() {
-    rs_prefs_rstudio_read(include = x$name)[[x$name]]
+    prefs_rstudio_read(include = x$name)[[x$name]]
   }
 }
 
@@ -29,7 +29,7 @@ factory_pref_toggle <- function(x) {
       )
     }
 
-    current <- rs_prefs_rstudio_read(include = x$name)[[x$name]]
+    current <- prefs_rstudio_read(include = x$name)[[x$name]]
     rs_write_rstudio_preference(name = x$name, value = !current, type = x$type)
     action <- if (current) cli::col_red("\u2A2F Disabled") else cli::col_green("\u2713 Enabled")
     cli::cli_text("{action} {x$name}")
