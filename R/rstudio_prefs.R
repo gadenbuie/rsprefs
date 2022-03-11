@@ -50,28 +50,28 @@ augment_rstudio_prefs <- function(prefs) {
   as_rs_pref_list(prefs)
 }
 
-#' rstudio_prefs
+#' prefs_rstudio
 #'
 #' @description
 #' The RStudio User Preferences, their description and default value.
 #'
 #' @source <https://github.com/rstudio/rstudio/raw/main/src/cpp/session/resources/schema/user-prefs-schema.json>
 #'
-#' @format `r rd_describe_schema(rstudio_prefs)`
+#' @format `r rd_describe_schema(prefs_rstudio)`
 #' @export
-rstudio_prefs <- augment_rstudio_prefs(
-  readRDS(system.file("rstudio_prefs.rds", package = "rsprefs"))
+prefs_rstudio <- augment_rstudio_prefs(
+  readRDS(system.file("prefs_rstudio.rds", package = "rsprefs"))
 )
 
-#' rstudio_prefs_v
+#' prefs_rstudio_v
 #'
 #' @description
 #' The RStudio User Preferences, their description and default value for
 #' released versions of RStudio.
 #'
 #' @source <https://github.com/rstudio/rstudio/raw/main/src/cpp/session/resources/schema/user-prefs-schema.json>
-#' @seealso [rstudio_prefs]
+#' @seealso [prefs_rstudio]
 #'
-#' @format A list with preferences from `r length(rstudio_prefs_v)` released
+#' @format A list with preferences from `r length(prefs_rstudio_v)` released
 #'   versions of RStudio.
-"rstudio_prefs_v"
+"prefs_rstudio_v"

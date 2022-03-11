@@ -173,37 +173,37 @@ schema <- prefs_schema()
 rsprefs includes the preference information for RStudio releases since 1.3.959.
 If you're using dailies or preview versions fo RStudio, rsprefs will attempt to download the schema that matches your version, falling back to the latest version if one is not available.
 
-For quick reference, the latest preference details are included in the `rstudio_prefs` object.
+For quick reference, the latest preference details are included in the `prefs_rstudio` object.
 
-```{r rstudio_prefs}
-rstudio_prefs
+```{r prefs_rstudio}
+prefs_rstudio
 ```
 
 This list contains detailed information about every preference, so you can use autocomplete to explore the preferences.
 
 ```{r}
-rstudio_prefs$highlight_r_function_calls
+prefs_rstudio$highlight_r_function_calls
 ```
 
 ```{r}
-rstudio_prefs$insert_native_pipe_operator
+prefs_rstudio$insert_native_pipe_operator
 ```
 
-The `rstudio_prefs` object also comes with helper functions to get, set and toggle preferences:
+The `prefs_rstudio` object also comes with helper functions to get, set and toggle preferences:
 
 ```{r get-set-toggle-helpers}
 # $get() current preference value
-original <- rstudio_prefs$insert_native_pipe_operator$get()
+original <- prefs_rstudio$insert_native_pipe_operator$get()
 original
 
 # $toggle() boolean preferences
-rstudio_prefs$insert_native_pipe_operator$toggle()
+prefs_rstudio$insert_native_pipe_operator$toggle()
 
 # $set() the preference directly
-rstudio_prefs$insert_native_pipe_operator$set(original)
+prefs_rstudio$insert_native_pipe_operator$set(original)
 
 # check that we've come full circle
-rstudio_prefs$insert_native_pipe_operator$get()
+prefs_rstudio$insert_native_pipe_operator$get()
 ```
 
 ```{r include=FALSE}

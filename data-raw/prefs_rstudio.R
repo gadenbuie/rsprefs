@@ -41,8 +41,8 @@ rstudio_prefs <-
     prefs_schema_prepare(content)
   })
 
-rstudio_prefs_v <- rstudio_prefs[setdiff(names(rstudio_prefs), "latest")]
-rstudio_prefs <- rstudio_prefs$latest
+prefs_rstudio_v <- rstudio_prefs[setdiff(names(rstudio_prefs), "latest")]
+prefs_rstudio <- rstudio_prefs$latest
 
-saveRDS(rstudio_prefs, here::here("inst", "rstudio_prefs.rds"), version = 3)
-usethis::use_data(rstudio_prefs_v, overwrite = TRUE)
+saveRDS(prefs_rstudio, here::here("inst", "prefs_rstudio.rds"), version = 3)
+usethis::use_data(prefs_rstudio_v, overwrite = TRUE)

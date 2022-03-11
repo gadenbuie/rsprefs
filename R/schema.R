@@ -17,8 +17,8 @@
 #'
 #' @export
 prefs_schema <- function(version = NULL, quiet = FALSE) {
-  if (!is.null(version) && version %in% names(rsprefs::rstudio_prefs_v)) {
-    return(rsprefs::rstudio_prefs_v[[version]])
+  if (!is.null(version) && version %in% names(rsprefs::prefs_rstudio_v)) {
+    return(rsprefs::prefs_rstudio_v[[version]])
   }
 
   v_rstudio <- rstudio_version()
@@ -33,7 +33,7 @@ prefs_schema <- function(version = NULL, quiet = FALSE) {
   }
 
   if (identical(version, v_closest_release[[1]])) {
-    prefs_closest <- rsprefs::rstudio_prefs_v[[names(v_closest_release)[[1]]]]
+    prefs_closest <- rsprefs::prefs_rstudio_v[[names(v_closest_release)[[1]]]]
     return(augment_rstudio_prefs(prefs_closest))
   }
 
@@ -63,7 +63,7 @@ prefs_schema <- function(version = NULL, quiet = FALSE) {
         parent = err
       )
     }
-    schema <<- rsprefs::rstudio_prefs_v[[v_closest_str]]
+    schema <<- rsprefs::prefs_rstudio_v[[v_closest_str]]
   })
 
 
@@ -114,7 +114,7 @@ rstudio_version <- function(x = NULL) {
 
 rstudio_closest_release <- function(version = NULL) {
   version <- rstudio_version(version)
-  releases <- purrr::set_names(names(rsprefs::rstudio_prefs_v))
+  releases <- purrr::set_names(names(rsprefs::prefs_rstudio_v))
   releases <- purrr::map(releases, rstudio_version)
   releases <- purrr::keep(releases, `<=`, version)
   releases[length(releases)]
