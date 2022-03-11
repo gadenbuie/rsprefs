@@ -1,70 +1,3 @@
-rs_prefs_user_path_default <- function() {
-  fs::path(
-    rappdirs::user_config_dir("rsprefs"),
-    "user-prefs.json"
-  )
-}
-
-rs_prefs_gist_default <- function() {
-  getOption("rsprefs.gist_id", NULL)
-}
-
-rs_prefs_user_write <- function(
-  prefs = rs_prefs_user_read(),
-  path = NULL
-) {
-  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
-
-  gist <- maybe_gist(path)
-  if (is_gist(gist)) {
-    gist_prefs_write(prefs, gist)
-    return(invisible(prefs))
-  }
-
-  if (identical(path, "new gist") || identical(path, "new public gist")) {
-    gist_prefs_create(prefs, public = TRUE)
-    return(invisible(prefs))
-  }
-  if (identical(path, "new private gist")) {
-    gist_prefs_create(prefs, public = FALSE)
-    return(invisible(prefs))
-  }
-
-  if (is_url(path)) {
-    cli::cli_abort("Cannot write to a URL, please provide a local {.code path}")
-  }
-
-  if (is.null(path)) {
-    path <- rs_prefs_user_path_default()
-    cli::cli_process_start(
-      path,
-      msg_done = path,
-      msg_failed = "Could not save RStudio user preferences to {.path {path}}"
-    )
-    fs::dir_create(fs::path_dir(path), recurse = TRUE)
-  }
-
-  checkmate::assert_character(path, len = 1, any.missing = FALSE)
-
-  jsonlite::write_json(prefs, path, null = "null", auto_unbox = TRUE, pretty = 2)
-  invisible(prefs)
-}
-
-rs_prefs_user_read <- function(path = NULL) {
-  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
-
-  gist <- maybe_gist(path)
-  if (is_gist(gist)) {
-    return(gist_prefs_read(gist))
-  }
-
-  checkmate::assert_character(path, len = 1, any.missing = FALSE)
-  if (!is_url(path) && !fs::file_exists(path)) {
-    cli::cli_abort("{.path {path}} does not exist")
-  }
-
-  jsonlite::read_json(path)
-}
 
 #' Snapshot RStudio Preferences
 #'
@@ -296,6 +229,75 @@ rs_prefs_reset_defaults <- function(
   rs_prefs_rstudio_write(defaults, verbose = verbose)
 
   invisible(old)
+}
+
+
+rs_prefs_user_path_default <- function() {
+  fs::path(
+    rappdirs::user_config_dir("rsprefs"),
+    "user-prefs.json"
+  )
+}
+
+rs_prefs_gist_default <- function() {
+  getOption("rsprefs.gist_id", NULL)
+}
+
+rs_prefs_user_write <- function(
+  prefs = rs_prefs_user_read(),
+  path = NULL
+) {
+  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+
+  gist <- maybe_gist(path)
+  if (is_gist(gist)) {
+    gist_prefs_write(prefs, gist)
+    return(invisible(prefs))
+  }
+
+  if (identical(path, "new gist") || identical(path, "new public gist")) {
+    gist_prefs_create(prefs, public = TRUE)
+    return(invisible(prefs))
+  }
+  if (identical(path, "new private gist")) {
+    gist_prefs_create(prefs, public = FALSE)
+    return(invisible(prefs))
+  }
+
+  if (is_url(path)) {
+    cli::cli_abort("Cannot write to a URL, please provide a local {.code path}")
+  }
+
+  if (is.null(path)) {
+    path <- rs_prefs_user_path_default()
+    cli::cli_process_start(
+      path,
+      msg_done = path,
+      msg_failed = "Could not save RStudio user preferences to {.path {path}}"
+    )
+    fs::dir_create(fs::path_dir(path), recurse = TRUE)
+  }
+
+  checkmate::assert_character(path, len = 1, any.missing = FALSE)
+
+  jsonlite::write_json(prefs, path, null = "null", auto_unbox = TRUE, pretty = 2)
+  invisible(prefs)
+}
+
+rs_prefs_user_read <- function(path = NULL) {
+  path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
+
+  gist <- maybe_gist(path)
+  if (is_gist(gist)) {
+    return(gist_prefs_read(gist))
+  }
+
+  checkmate::assert_character(path, len = 1, any.missing = FALSE)
+  if (!is_url(path) && !fs::file_exists(path)) {
+    cli::cli_abort("{.path {path}} does not exist")
+  }
+
+  jsonlite::read_json(path)
 }
 
 rstudio_all_prefs <- function() {
