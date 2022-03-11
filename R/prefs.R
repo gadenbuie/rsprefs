@@ -4,17 +4,17 @@
 #' @description
 #' Save named snapshots of your RStudio preferences that you can apply later.
 #'
-#' * `rs_prefs_snapshot()`: Save your RStudio user preferences with a name that
+#' * `snapshot_prefs_save()`: Save your RStudio user preferences with a name that
 #'   you can later use to identify these particular settings.
-#' * `rs_prefs_snapshot_apply()`: Apply a saved snapshot.
-#' * `rs_prefs_snapshot_list()`: List available snapshots.
-#' * `rs_prefs_snapshot_undo()`: Undo the last applied snapshot.
+#' * `snapshot_prefs_use()`: Apply a saved snapshot.
+#' * `snapshot_prefs_list()`: List available snapshots.
+#' * `snapshot_prefs_undo()`: Undo the last applied snapshot.
 #'
 #' @param name The name of the snapshot to save or apply.
 #'
-#'   - In `rs_prefs_snapshot()`, set to `NULL` to show the preferences that
+#'   - In `snapshot_prefs_save()`, set to `NULL` to show the preferences that
 #'     would be included in the snapshot.
-#'   - In `rs_prefs_snapshot_apply()`, set to `NULL` to list available snapshots.
+#'   - In `snapshot_prefs_use()`, set to `NULL` to list available snapshots.
 #' @param path A GitHub gist ID or local path where the snapshot should be
 #'   saved. To create a new public gist, set `path = "new gist"`. For a new
 #'   private gist, use `path = "new private gist"`.
@@ -45,12 +45,16 @@
 #' @examples
 #' if (interactive()) {
 #'   tmpfile <- tempfile(fileext = ".json")
-#'   rs_prefs_snapshot("example", path = tmpfile)
-#'   rs_prefs_snapshot_list(tmpfile)
+#'   snapshot_prefs_save("example", path = tmpfile)
+#'   snapshot_prefs_list(tmpfile)
 #' }
 #'
+#' @name snapshot_prefs
+NULL
+
+#' @rdname snapshot_prefs
 #' @export
-rs_prefs_snapshot <- function(
+snapshot_prefs_save <- function(
   name,
   path = NULL,
   include = NULL,
@@ -104,9 +108,9 @@ rs_prefs_snapshot <- function(
   rs_prefs_user_write(snaps_all, path = path)
 }
 
-#' @rdname rs_prefs_snapshot
+#' @rdname snapshot_prefs
 #' @export
-rs_prefs_snapshot_apply <- function(
+snapshot_prefs_use <- function(
   name = NULL,
   path = NULL,
   exclude_os_prefs = TRUE,
@@ -117,7 +121,7 @@ rs_prefs_snapshot_apply <- function(
   snaps <- rs_prefs_user_read(path)
 
   if (is.null(name)) {
-    return(rs_prefs_snapshot_list(path, verbose = missing(verbose) || verbose))
+    return(snapshot_prefs_list(path, verbose = missing(verbose) || verbose))
   }
 
   checkmate::assert_character(name, len = 1, any.missing = FALSE)
@@ -153,9 +157,9 @@ rs_prefs_snapshot_apply <- function(
   rs_prefs_rstudio_write(snap, verbose = verbose)
 }
 
-#' @rdname rs_prefs_snapshot
+#' @rdname snapshot_prefs
 #' @export
-rs_prefs_snapshot_list <- function(path = NULL, verbose = TRUE) {
+snapshot_prefs_list <- function(path = NULL, verbose = TRUE) {
   path <- path %||% rs_prefs_gist_default() %||% rs_prefs_user_path_default()
   path <- maybe_gist(path)
 
@@ -174,9 +178,9 @@ rs_prefs_snapshot_list <- function(path = NULL, verbose = TRUE) {
   }
 }
 
-#' @rdname rs_prefs_snapshot
+#' @rdname snapshot_prefs
 #' @export
-rs_prefs_snapshot_undo <- function(verbose = TRUE) {
+snapshot_prefs_undo <- function(verbose = TRUE) {
   stack <- ls(.prefs_undo)
   if (!length(stack)) {
     cli::cli_alert_warning("Nothing to undo.")
@@ -197,12 +201,12 @@ rs_prefs_snapshot_undo <- function(verbose = TRUE) {
 #' rs_prefs_reset_defaults()
 #' }
 #'
-#' @inheritParams rs_prefs_snapshot
-#' @inheritDotParams rs_prefs_snapshot include exclude exclude_os_prefs
+#' @inheritParams snapshot_prefs_save
+#' @inheritDotParams snapshot_prefs_save include exclude exclude_os_prefs
 #'
 #' @return Resets preferences to their built-in defaults, returning the current
 #'   preferences invisibly as a list. You can also return to the preferences
-#'   prior to `rs_prefs_reset_defaults()` with [rs_prefs_snapshot_undo()].
+#'   prior to `rs_prefs_reset_defaults()` with [snapshot_prefs_undo()].
 #'
 #' @export
 rs_prefs_reset_defaults <- function(

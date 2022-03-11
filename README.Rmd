@@ -39,7 +39,7 @@ library(rsprefs)
    Set `path = "new private gist"` to keep your preferences private.
    
    ```r
-   rs_prefs_snapshot(name = "sync", path = "new gist")
+   snapshot_prefs_save(name = "sync", path = "new gist")
    ```
    ```
    ✓ Created gist with id 96e8c7f0a624bfed8018987185feb30b
@@ -58,13 +58,13 @@ library(rsprefs)
    using the gist ID found from the global option.
 
    ```r
-   rs_prefs_snapshot("sync", overwrite = TRUE)
+   snapshot_prefs_save("sync", overwrite = TRUE)
    ```
    
 4. On a different computer or session, setup the `rsprefs.gist_id` option and then apply your snapshot.
 
    ```r
-   rs_prefs_snapshot_apply("sync")
+   snapshot_prefs_use("sync")
    ```
 
 ## Manage Your RStudio Preferences
@@ -84,27 +84,27 @@ Here I'll take a snapshot of my current preferences.
 ```{r}
 tmp_snap <- "tmp_snap.json"
 
-rs_prefs_snapshot("demo", path = tmp_snap)
+snapshot_prefs_save("demo", path = tmp_snap)
 ```
 
-You can list available preference snapshots with `rs_prefs_snapshot_list()`
+You can list available preference snapshots with `snapshot_prefs_list()`
 
 ```{r}
-rs_prefs_snapshot_list(path = tmp_snap)
+snapshot_prefs_list(path = tmp_snap)
 ```
 
-or you can apply the preferences in a snapshot with `rs_prefs_snapshot_apply()`.
+or you can apply the preferences in a snapshot with `snapshot_prefs_use()`.
 (You can also set `preview = TRUE` to preview the preferences included in the snapshot without applying them.)
 
 ```{r local-prefs-preview}
-rs_prefs_snapshot_apply(
+snapshot_prefs_use(
   name = "demo", 
   path = tmp_snap, 
   preview = TRUE
 )
 ```
 
-If you apply the snapshot and change your mind, you can roll back the changes from the snapshot by calling `rs_prefs_snapshot_undo()`.
+If you apply the snapshot and change your mind, you can roll back the changes from the snapshot by calling `snapshot_prefs_undo()`.
 
 ### Choose which preferences to include in the snapshot
 
@@ -132,13 +132,13 @@ There are three arguments that control which preferences are included:
 For example, you could store your favorite pane layout as `"favorite_panes"`:
 
 ```{r local-prefs-panes}
-rs_prefs_snapshot(
+snapshot_prefs_save(
   name = "favorite_panes", 
   path = tmp_snap,
   include = "panes"
 )
 
-rs_prefs_snapshot_apply(
+snapshot_prefs_use(
   name = "favorite_panes",
   path = tmp_snap,
   preview = TRUE
@@ -157,7 +157,7 @@ rs_prefs_reset_defaults()
 If you want to return to your personal preferences, you can undo the change to the defaults with 
 
 ```{r eval=FALSE}
-rs_prefs_snapshot_undo()
+snapshot_prefs_undo()
 ```
 
 For a longer-term return to RStudio's defaults, make sure that you've taken [a snapshot of your personal preferences](#quick-start) before you reset.

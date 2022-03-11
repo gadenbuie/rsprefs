@@ -25,7 +25,7 @@ all preferences regardless of source.}
 \item{verbose}{Prints or suppress informative output}
 
 \item{...}{
-  Arguments passed on to \code{\link[=rs_prefs_snapshot]{rs_prefs_snapshot}}
+  Arguments passed on to \code{\link[=snapshot_prefs_save]{snapshot_prefs_save}}
   \describe{
     \item{\code{include}}{Names of RStudio preferences to include. If provided, only
 these preferences are included. See \link{rstudio_prefs} for preference names.}
@@ -38,7 +38,7 @@ system preferences from the snapshot or the snapshot restore.}
 \value{
 Resets preferences to their built-in defaults, returning the current
 preferences invisibly as a list. You can also return to the preferences
-prior to \code{rs_prefs_reset_defaults()} with \code{\link[=rs_prefs_snapshot_undo]{rs_prefs_snapshot_undo()}}.
+prior to \code{rs_prefs_reset_defaults()} with \code{\link[=snapshot_prefs_undo]{snapshot_prefs_undo()}}.
 }
 \description{
 Returns currently set preferences to RStudio's original, built-in default.
