@@ -72,7 +72,7 @@ jobs:
         shell: Rscript {0}
         run: |
           subdir <- "${{ env.subdir }}"
-          pkgdown::deploy_site_github(subdir = if (nzchar(subdir)) subdir, clean = nzchar(subdir))
+          pkgdown::deploy_to_branch(subdir = if (nzchar(subdir)) subdir, clean = nzchar(subdir))
 
   pkgdown-clean:
     if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
