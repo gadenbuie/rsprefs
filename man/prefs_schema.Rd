@@ -17,7 +17,7 @@ Finds and downloads the RStudio user preference schema for your current
 version of the IDE (or the most recent released version of the IDE). The
 preference details for all released versions of the IDE are included in the
 \pkg{rsprefs} package. The preferences from the latest version are available
-in \link{rstudio_prefs}, but note that those preferences may not match your
+in \link{prefs_rstudio}, but note that those preferences may not match your
 version of RStudio unless you're using the latest preview version available
 at \url{https://dailies.rstudio.com}.
 }

@@ -6,7 +6,7 @@ factory_pref_set <- function(x) {
       value <- rlang::arg_match(
         value,
         values = unlist(x$enum),
-        error_call = rlang::call2(rlang::sym(sprintf("rstudio_prefs$%s$set", x$name)))
+        error_call = rlang::call2(rlang::sym(sprintf("prefs_rstudio$%s$set", x$name)))
       )
     }
     rs_write_rstudio_preference(name = x$name, value = value, type = x$type)
@@ -37,7 +37,7 @@ factory_pref_toggle <- function(x) {
   }
 }
 
-augment_rstudio_prefs <- function(prefs) {
+augment_prefs_rstudio <- function(prefs) {
   prefs <- lapply(prefs, function(x) {
     x$get <- factory_pref_get(x)
     x$set <- factory_pref_set(x)
@@ -59,7 +59,7 @@ augment_rstudio_prefs <- function(prefs) {
 #'
 #' @format `r rd_describe_schema(prefs_rstudio)`
 #' @export
-prefs_rstudio <- augment_rstudio_prefs(
+prefs_rstudio <- augment_prefs_rstudio(
   readRDS(system.file("prefs_rstudio.rds", package = "rsprefs"))
 )
 

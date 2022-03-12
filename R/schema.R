@@ -4,7 +4,7 @@
 #' version of the IDE (or the most recent released version of the IDE). The
 #' preference details for all released versions of the IDE are included in the
 #' \pkg{rsprefs} package. The preferences from the latest version are available
-#' in [rstudio_prefs], but note that those preferences may not match your
+#' in [prefs_rstudio], but note that those preferences may not match your
 #' version of RStudio unless you're using the latest preview version available
 #' at <https://dailies.rstudio.com>.
 #'
@@ -34,13 +34,13 @@ prefs_schema <- function(version = NULL, quiet = FALSE) {
 
   if (identical(version, v_closest_release[[1]])) {
     prefs_closest <- rsprefs::prefs_rstudio_v[[names(v_closest_release)[[1]]]]
-    return(augment_rstudio_prefs(prefs_closest))
+    return(augment_prefs_rstudio(prefs_closest))
   }
 
   cache_dir <- rappdirs::user_data_dir("rsprefs")
   path <- fs::path(cache_dir, version, ext = "rds")
   if (fs::file_exists(path)) {
-    return(augment_rstudio_prefs(readRDS(path)))
+    return(augment_prefs_rstudio(readRDS(path)))
   }
 
   url <- prefs_schema_url(version)
@@ -74,7 +74,7 @@ prefs_schema <- function(version = NULL, quiet = FALSE) {
   }
 
   if (!is.null(schema)) {
-    schema <- augment_rstudio_prefs(schema)
+    schema <- augment_prefs_rstudio(schema)
   }
 
   schema

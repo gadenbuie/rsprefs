@@ -44,10 +44,10 @@ saved. To create a new public gist, set \code{path = "new gist"}. For a new
 private gist, use \code{path = "new private gist"}.}
 
 \item{include}{Names of RStudio preferences to include. If provided, only
-these preferences are included. See \link{rstudio_prefs} for preference names.}
+these preferences are included. See \link{prefs_rstudio} for preference names.}
 
 \item{exclude}{Names of RStudio preferences to exclude from the snapshot. See
-\link{rstudio_prefs} for all of the preference names.}
+\link{prefs_rstudio} for all of the preference names.}
 
 \item{source}{The source of the current preference value. Preferences are set
 at different levels, from lowest to highest precedence:

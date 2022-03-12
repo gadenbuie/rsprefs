@@ -28,9 +28,9 @@ all preferences regardless of source.}
   Arguments passed on to \code{\link[=snapshot_prefs_save]{snapshot_prefs_save}}
   \describe{
     \item{\code{include}}{Names of RStudio preferences to include. If provided, only
-these preferences are included. See \link{rstudio_prefs} for preference names.}
+these preferences are included. See \link{prefs_rstudio} for preference names.}
     \item{\code{exclude}}{Names of RStudio preferences to exclude from the snapshot. See
-\link{rstudio_prefs} for all of the preference names.}
+\link{prefs_rstudio} for all of the preference names.}
     \item{\code{exclude_os_prefs}}{Excludes operating-system or machine-dependent
 system preferences from the snapshot or the snapshot restore.}
   }}

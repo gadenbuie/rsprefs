@@ -19,9 +19,9 @@
 #'   saved. To create a new public gist, set `path = "new gist"`. For a new
 #'   private gist, use `path = "new private gist"`.
 #' @param include Names of RStudio preferences to include. If provided, only
-#'   these preferences are included. See [rstudio_prefs] for preference names.
+#'   these preferences are included. See [prefs_rstudio] for preference names.
 #' @param exclude Names of RStudio preferences to exclude from the snapshot. See
-#'   [rstudio_prefs] for all of the preference names.
+#'   [prefs_rstudio] for all of the preference names.
 #' @param source The source of the current preference value. Preferences are set
 #'   at different levels, from lowest to highest precedence:
 #'
