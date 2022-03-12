@@ -25,7 +25,7 @@ name: pkgdown
 jobs:
   pkgdown-build:
     runs-on: ubuntu-latest
-    if: ${{ !(github.event_name == "pull_request" && github.event.action == "closed") }}
+    if: ${{ !(github.event_name == 'pull_request' && github.event.action == 'closed') }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -75,7 +75,7 @@ jobs:
           pkgdown::deploy_to_github(subdir = if (nzchar(subdir)) subdir, clean = nzchar(subdir))
 
   pkgdown-clean:
-    if: ${{ github.event_name == "pull_request" && github.event.action == "closed"}}
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
