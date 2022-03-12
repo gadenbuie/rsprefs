@@ -4,6 +4,8 @@
 # rsprefs
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/gadenbuie/rsprefs/workflows/R-CMD-check/badge.svg)](https://github.com/gadenbuie/rsprefs/actions)
 <!-- badges: end -->
 
 The goal of rsprefs is to help you manage your RStudio preferences.
@@ -99,17 +101,17 @@ snapshot_prefs_use(
   preview = TRUE
 )
 #> <snapshot "demo">
-#> auto_detect_indentation: true
 #> check_arguments_to_r_function_calls: true
 #> check_unexpected_assignment_in_function_call: true
 #> console_double_click_select: true
 #> continue_comments_on_newline: true
-#> doc_outline_show: "sections_and_chunks"
 #> document_author: "Luke Skywalker"
 #> editor_keybindings: "vim"
-#> editor_theme: "Horizon Dark {rsthemes}"
+#> editor_theme: "Night Owl {rsthemes}"
 #> font_size_points: 12
-#> ... and 26 more
+#> highlight_r_function_calls: true
+#> highlight_selected_line: true
+#> ... and 17 more
 ```
 
 If you apply the snapshot and change your mind, you can roll back the
@@ -158,7 +160,7 @@ snapshot_prefs_use(
   preview = TRUE
 )
 #> <snapshot "favorite_panes">
-#> panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentation"],"tabSet2":["Environm…
+#> panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentatio…
 ```
 
 ### Reset RStudio’s Defaults
@@ -190,7 +192,8 @@ RStudio using:
 ``` r
 schema <- prefs_schema()
 #> ! Using preference schema from RStudio v2022.02.0+443
-#> x Schema for current version v2022.6.0.195 is not available online (or is not different). 
+#> x Schema for current version v2022.2.0.443 is not available online (or is not different).
+#>  
 ```
 
 rsprefs includes the preference information for RStudio releases since
@@ -207,7 +210,7 @@ prefs_rstudio
 #> save_workspace: "ask"
 #> load_workspace: true
 #> initial_working_directory: ""
-#> cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","secondary":""}
+#> cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","secon…
 #> bioconductor_mirror_name: "Seattle (USA)"
 #> bioconductor_mirror_url: "http://www.bioconductor.org"
 #> always_save_history: true
