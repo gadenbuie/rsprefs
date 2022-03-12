@@ -90,7 +90,7 @@
 <div class="page-header"><h1 id="rsprefs">rsprefs<a class="anchor" aria-label="anchor" href="#rsprefs"></a>
 </h1></div>
 <!-- badges: start -->
-<!-- badges: end -->
+
 <p>The goal of rsprefs is to help you manage your RStudio preferences.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -159,17 +159,17 @@
   preview <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span>
 <span class="co">#&gt; &lt;snapshot "demo"&gt;</span>
-<span class="co">#&gt; auto_detect_indentation: true</span>
 <span class="co">#&gt; check_arguments_to_r_function_calls: true</span>
 <span class="co">#&gt; check_unexpected_assignment_in_function_call: true</span>
 <span class="co">#&gt; console_double_click_select: true</span>
 <span class="co">#&gt; continue_comments_on_newline: true</span>
-<span class="co">#&gt; doc_outline_show: "sections_and_chunks"</span>
 <span class="co">#&gt; document_author: "Luke Skywalker"</span>
 <span class="co">#&gt; editor_keybindings: "vim"</span>
-<span class="co">#&gt; editor_theme: "Horizon Dark {rsthemes}"</span>
+<span class="co">#&gt; editor_theme: "Night Owl {rsthemes}"</span>
 <span class="co">#&gt; font_size_points: 12</span>
-<span class="co">#&gt; ... and 26 more</span></code></pre></div>
+<span class="co">#&gt; highlight_r_function_calls: true</span>
+<span class="co">#&gt; highlight_selected_line: true</span>
+<span class="co">#&gt; ... and 17 more</span></code></pre></div>
 <p>If you apply the snapshot and change your mind, you can roll back the changes from the snapshot by calling <code><a href="reference/snapshot_prefs.html">snapshot_prefs_undo()</a></code>.</p>
 </div>
 <div class="section level3">
@@ -212,7 +212,7 @@
   preview <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span>
 <span class="co">#&gt; &lt;snapshot "favorite_panes"&gt;</span>
-<span class="co">#&gt; panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentation"],"tabSet2":["Environm…</span></code></pre></div>
+<span class="co">#&gt; panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentatio…</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reset-rstudios-defaults">Reset RStudio’s Defaults<a class="anchor" aria-label="anchor" href="#reset-rstudios-defaults"></a>
@@ -233,7 +233,8 @@
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prefs_schema.html">prefs_schema</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; ! Using preference schema from RStudio v2022.02.0+443</span>
-<span class="co">#&gt; x Schema for current version v2022.6.0.195 is not available online (or is not different). </span></code></pre></div>
+<span class="co">#&gt; x Schema for current version v2022.2.0.443 is not available online (or is not different).</span>
+<span class="co">#&gt;  </span></code></pre></div>
 <p>rsprefs includes the preference information for RStudio releases since 1.3.959. If you’re using dailies or preview versions fo RStudio, rsprefs will attempt to download the schema that matches your version, falling back to the latest version if one is not available.</p>
 <p>For quick reference, the latest preference details are included in the <code>prefs_rstudio</code> object.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -242,7 +243,7 @@
 <span class="co">#&gt; save_workspace: "ask"</span>
 <span class="co">#&gt; load_workspace: true</span>
 <span class="co">#&gt; initial_working_directory: ""</span>
-<span class="co">#&gt; cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","secondary":""}</span>
+<span class="co">#&gt; cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","secon…</span>
 <span class="co">#&gt; bioconductor_mirror_name: "Seattle (USA)"</span>
 <span class="co">#&gt; bioconductor_mirror_url: "http://www.bioconductor.org"</span>
 <span class="co">#&gt; always_save_history: true</span>
@@ -315,7 +316,12 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/gadenbuie/rsprefs/actions" class="external-link"><img src="https://github.com/gadenbuie/rsprefs/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
