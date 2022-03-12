@@ -60,7 +60,7 @@ jobs:
       - name: "[PR] Set documentation subdirectory"
         if: github.event_name == 'pull_request'
         run: |
-          echo "subdir=preview/pr${{{ github.event.number }}}" >> $GITHUB_ENV
+          echo "subdir=preview/pr${{ github.event.number }}" >> $GITHUB_ENV
 
       # If event is a tag, set subdir to '<tag_name>'
       - name: "[tag] Set documentation subdirectory"
