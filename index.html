@@ -87,17 +87,16 @@
 <div class="page-header"><h1 id="rsprefs">rsprefs<a class="anchor" aria-label="anchor" href="#rsprefs"></a>
 </h1></div>
 <!-- badges: start -->
-
 <p>The goal of rsprefs is to help you manage your RStudio preferences.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of rsprefs from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"gadenbuie/rsprefs"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"gadenbuie/rsprefs"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gadenbuie/rsprefs" class="external-link">rsprefs</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/gadenbuie/rsprefs" class="external-link">rsprefs</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -106,7 +105,7 @@
 <li>
 <p>Snapshot your RStudio preferences to a new GitHub gist. Set <code>path = "new private gist"</code> to keep your preferences private.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"sync"</span>, path <span class="op">=</span> <span class="st">"new gist"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"sync"</span>, path <span class="op">=</span> <span class="st">"new gist"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>✓ Created gist with id <span class="fl">96e8</span>c7f0a624bfed8018987185feb30b</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ℹ Use this gist automatically by adding the following to your <span class="sc">~</span><span class="er">/</span>.Rprofile.</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Call <span class="st">`</span><span class="at">usethis::edit_r_profile()</span><span class="st">`</span>     </span>
@@ -120,12 +119,12 @@
 <li>
 <p>If you change your IDE preferences you can update your snapshot by name, using the gist ID found from the global option.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span><span class="st">"sync"</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span><span class="st">"sync"</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </li>
 <li>
 <p>On a different computer or session, setup the <code>rsprefs.gist_id</code> option and then apply your snapshot.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_use</a></span><span class="op">(</span><span class="st">"sync"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_use</a></span><span class="op">(</span><span class="st">"sync"</span><span class="op">)</span></span></code></pre></div>
 </li>
 </ol>
 </div>
@@ -139,34 +138,34 @@
 <p>By default, rsprefs will store snapshots in a JSON file in <code>rappdirs::user_config_dir("rsprefs")</code>, but you can choose where to store snapshots with the <code>path</code> argument.</p>
 <p>In these examples, I’ll use a temporary file for demonstration purposes. Here I’ll take a snapshot of my current preferences.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">tmp_snap</span> <span class="op">&lt;-</span> <span class="st">"tmp_snap.json"</span>
-
-<span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span><span class="st">"demo"</span>, path <span class="op">=</span> <span class="va">tmp_snap</span><span class="op">)</span>
-<span class="co">#&gt; ℹ Writing snapshot demo to 'tmp_snap.json'✓ Writing snapshot demo to 'tmp_snap.json' ... done</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">tmp_snap</span> <span class="op">&lt;-</span> <span class="st">"tmp_snap.json"</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span><span class="st">"demo"</span>, path <span class="op">=</span> <span class="va">tmp_snap</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ℹ Writing snapshot demo to 'tmp_snap.json'✓ Writing snapshot demo to 'tmp_snap.json' ... done</span></span></code></pre></div>
 <p>You can list available preference snapshots with <code><a href="reference/snapshot_prefs.html">snapshot_prefs_list()</a></code></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_list</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">tmp_snap</span><span class="op">)</span>
-<span class="co">#&gt; Snapshot: 'tmp_snap.json'</span>
-<span class="co">#&gt; • demo</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_list</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">tmp_snap</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Snapshot: 'tmp_snap.json'</span></span>
+<span><span class="co">#&gt; • demo</span></span></code></pre></div>
 <p>or you can apply the preferences in a snapshot with <code><a href="reference/snapshot_prefs.html">snapshot_prefs_use()</a></code>. (You can also set <code>preview = TRUE</code> to preview the preferences included in the snapshot without applying them.)</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_use</a></span><span class="op">(</span>
-  name <span class="op">=</span> <span class="st">"demo"</span>, 
-  path <span class="op">=</span> <span class="va">tmp_snap</span>, 
-  preview <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-<span class="co">#&gt; &lt;snapshot "demo"&gt;</span>
-<span class="co">#&gt; check_arguments_to_r_function_calls: true</span>
-<span class="co">#&gt; check_unexpected_assignment_in_function_call: true</span>
-<span class="co">#&gt; console_double_click_select: true</span>
-<span class="co">#&gt; continue_comments_on_newline: true</span>
-<span class="co">#&gt; document_author: "Luke Skywalker"</span>
-<span class="co">#&gt; editor_keybindings: "vim"</span>
-<span class="co">#&gt; editor_theme: "Night Owl {rsthemes}"</span>
-<span class="co">#&gt; font_size_points: 12</span>
-<span class="co">#&gt; highlight_r_function_calls: true</span>
-<span class="co">#&gt; highlight_selected_line: true</span>
-<span class="co">#&gt; ... and 17 more</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_use</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"demo"</span>, </span>
+<span>  path <span class="op">=</span> <span class="va">tmp_snap</span>, </span>
+<span>  preview <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;snapshot "demo"&gt;</span></span>
+<span><span class="co">#&gt; check_arguments_to_r_function_calls: true</span></span>
+<span><span class="co">#&gt; check_unexpected_assignment_in_function_call: true</span></span>
+<span><span class="co">#&gt; console_double_click_select: true</span></span>
+<span><span class="co">#&gt; continue_comments_on_newline: true</span></span>
+<span><span class="co">#&gt; document_author: "Luke Skywalker"</span></span>
+<span><span class="co">#&gt; editor_keybindings: "vim"</span></span>
+<span><span class="co">#&gt; editor_theme: "Night Owl {rsthemes}"</span></span>
+<span><span class="co">#&gt; font_size_points: 12</span></span>
+<span><span class="co">#&gt; highlight_r_function_calls: true</span></span>
+<span><span class="co">#&gt; highlight_selected_line: true</span></span>
+<span><span class="co">#&gt; ... and 17 more</span></span></code></pre></div>
 <p>If you apply the snapshot and change your mind, you can roll back the changes from the snapshot by calling <code><a href="reference/snapshot_prefs.html">snapshot_prefs_undo()</a></code>.</p>
 </div>
 <div class="section level3">
@@ -196,30 +195,30 @@
 </ul>
 <p>For example, you could store your favorite pane layout as <code>"favorite_panes"</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span>
-  name <span class="op">=</span> <span class="st">"favorite_panes"</span>, 
-  path <span class="op">=</span> <span class="va">tmp_snap</span>,
-  include <span class="op">=</span> <span class="st">"panes"</span>
-<span class="op">)</span>
-<span class="co">#&gt; ℹ Writing snapshot favorite_panes to 'tmp_snap.json'✓ Writing snapshot favorite_panes to 'tmp_snap.json' ... done</span>
-
-<span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_use</a></span><span class="op">(</span>
-  name <span class="op">=</span> <span class="st">"favorite_panes"</span>,
-  path <span class="op">=</span> <span class="va">tmp_snap</span>,
-  preview <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-<span class="co">#&gt; &lt;snapshot "favorite_panes"&gt;</span>
-<span class="co">#&gt; panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentatio…</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"favorite_panes"</span>, </span>
+<span>  path <span class="op">=</span> <span class="va">tmp_snap</span>,</span>
+<span>  include <span class="op">=</span> <span class="st">"panes"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; ℹ Writing snapshot favorite_panes to 'tmp_snap.json'✓ Writing snapshot favorite_panes to 'tmp_snap.json' ... done</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_use</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"favorite_panes"</span>,</span>
+<span>  path <span class="op">=</span> <span class="va">tmp_snap</span>,</span>
+<span>  preview <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;snapshot "favorite_panes"&gt;</span></span>
+<span><span class="co">#&gt; panes: {"quadrants":["Source","TabSet1","Console","TabSet2"],"tabSet1":["History","Connections","Packages","Presentatio…</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reset-rstudios-defaults">Reset RStudio’s Defaults<a class="anchor" aria-label="anchor" href="#reset-rstudios-defaults"></a>
 </h3>
 <p>Occasionally, you might want to reset all of your preferences to RStudio’s “factory defaults”, for example when teaching or working with a beginner. To quickly reset all defaults, call</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/prefs_reset_defaults.html">prefs_reset_defaults</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/prefs_reset_defaults.html">prefs_reset_defaults</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>If you want to return to your personal preferences, you can undo the change to the defaults with</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_undo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_undo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>For a longer-term return to RStudio’s defaults, make sure that you’ve taken <a href="#quick-start">a snapshot of your personal preferences</a> before you reset.</p>
 </div>
 </div>
@@ -228,57 +227,57 @@
 </h2>
 <p>You can obtain a list of available preferences for your version of RStudio using:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prefs_schema.html">prefs_schema</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ! Using preference schema from RStudio v2022.02.0+443</span>
-<span class="co">#&gt; x Schema for current version v2022.2.0.443 is not available online (or is not different).</span>
-<span class="co">#&gt;  </span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prefs_schema.html">prefs_schema</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ! Using preference schema from RStudio v2022.02.0+443</span></span>
+<span><span class="co">#&gt; x Schema for current version v2022.2.0.443 is not available online (or is not different).</span></span>
+<span><span class="co">#&gt;  </span></span></code></pre></div>
 <p>rsprefs includes the preference information for RStudio releases since 1.3.959. If you’re using dailies or preview versions fo RStudio, rsprefs will attempt to download the schema that matches your version, falling back to the latest version if one is not available.</p>
 <p>For quick reference, the latest preference details are included in the <code>prefs_rstudio</code> object.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prefs_rstudio</span>
-<span class="co">#&gt; run_rprofile_on_resume: false</span>
-<span class="co">#&gt; save_workspace: "ask"</span>
-<span class="co">#&gt; load_workspace: true</span>
-<span class="co">#&gt; initial_working_directory: ""</span>
-<span class="co">#&gt; cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","secon…</span>
-<span class="co">#&gt; bioconductor_mirror_name: "Seattle (USA)"</span>
-<span class="co">#&gt; bioconductor_mirror_url: "http://www.bioconductor.org"</span>
-<span class="co">#&gt; always_save_history: true</span>
-<span class="co">#&gt; remove_history_duplicates: false</span>
-<span class="co">#&gt; show_last_dot_value: false</span>
-<span class="co">#&gt; ... and 223 more</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">prefs_rstudio</span></span>
+<span><span class="co">#&gt; run_rprofile_on_resume: false</span></span>
+<span><span class="co">#&gt; save_workspace: "ask"</span></span>
+<span><span class="co">#&gt; load_workspace: true</span></span>
+<span><span class="co">#&gt; initial_working_directory: ""</span></span>
+<span><span class="co">#&gt; cran_mirror: {"name":"Global (CDN)","host":"RStudio","url":"https://cran.rstudio.com/","repos":"","country":"us","secon…</span></span>
+<span><span class="co">#&gt; bioconductor_mirror_name: "Seattle (USA)"</span></span>
+<span><span class="co">#&gt; bioconductor_mirror_url: "http://www.bioconductor.org"</span></span>
+<span><span class="co">#&gt; always_save_history: true</span></span>
+<span><span class="co">#&gt; remove_history_duplicates: false</span></span>
+<span><span class="co">#&gt; show_last_dot_value: false</span></span>
+<span><span class="co">#&gt; ... and 223 more</span></span></code></pre></div>
 <p>This list contains detailed information about every preference, so you can use autocomplete to explore the preferences.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">highlight_r_function_calls</span>
-<span class="co">#&gt; &lt;highlight_r_function_calls&gt;</span>
-<span class="co">#&gt; Whether to highlight R function calls in the code editor.</span>
-<span class="co">#&gt; Type: boolean</span>
-<span class="co">#&gt; Default: false</span>
-<span class="co">#&gt; Current: true</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">highlight_r_function_calls</span></span>
+<span><span class="co">#&gt; &lt;highlight_r_function_calls&gt;</span></span>
+<span><span class="co">#&gt; Whether to highlight R function calls in the code editor.</span></span>
+<span><span class="co">#&gt; Type: boolean</span></span>
+<span><span class="co">#&gt; Default: false</span></span>
+<span><span class="co">#&gt; Current: true</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span>
-<span class="co">#&gt; &lt;insert_native_pipe_operator&gt;</span>
-<span class="co">#&gt; Whether the Insert Pipe Operator command should insert the native R pipe operator, |&gt;</span>
-<span class="co">#&gt; Type: boolean</span>
-<span class="co">#&gt; Default: false</span>
-<span class="co">#&gt; Current: false</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span></span>
+<span><span class="co">#&gt; &lt;insert_native_pipe_operator&gt;</span></span>
+<span><span class="co">#&gt; Whether the Insert Pipe Operator command should insert the native R pipe operator, |&gt;</span></span>
+<span><span class="co">#&gt; Type: boolean</span></span>
+<span><span class="co">#&gt; Default: false</span></span>
+<span><span class="co">#&gt; Current: false</span></span></code></pre></div>
 <p>The <code>prefs_rstudio</code> object also comes with helper functions to get, set and toggle preferences:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># $get() current preference value</span>
-<span class="va">original</span> <span class="op">&lt;-</span> <span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-<span class="va">original</span>
-<span class="co">#&gt; [1] FALSE</span>
-
-<span class="co"># $toggle() boolean preferences</span>
-<span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span><span class="op">$</span><span class="fu">toggle</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ✓ Enabled insert_native_pipe_operator</span>
-
-<span class="co"># $set() the preference directly</span>
-<span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">original</span><span class="op">)</span>
-
-<span class="co"># check that we've come full circle</span>
-<span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] FALSE</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># $get() current preference value</span></span>
+<span><span class="va">original</span> <span class="op">&lt;-</span> <span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">original</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span>
+<span></span>
+<span><span class="co"># $toggle() boolean preferences</span></span>
+<span><span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span><span class="op">$</span><span class="fu">toggle</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ✓ Enabled insert_native_pipe_operator</span></span>
+<span></span>
+<span><span class="co"># $set() the preference directly</span></span>
+<span><span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="va">original</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># check that we've come full circle</span></span>
+<span><span class="va">prefs_rstudio</span><span class="op">$</span><span class="va">insert_native_pipe_operator</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -313,12 +312,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/gadenbuie/rsprefs/actions" class="external-link"><img src="https://github.com/gadenbuie/rsprefs/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-</ul>
-</div>
+
 
   </aside>
 </div>
@@ -331,7 +325,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>

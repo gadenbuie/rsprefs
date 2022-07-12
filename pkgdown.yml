@@ -1,8 +1,8 @@
 pandoc: 2.14.2
-pkgdown: 2.0.2
+pkgdown: 2.0.5
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-04-23T00:28Z
+last_built: 2022-07-12T16:00Z
 urls:
   reference: http://pkg.garrickadenbuie.com/rsprefs/reference
   article: http://pkg.garrickadenbuie.com/rsprefs/articles
