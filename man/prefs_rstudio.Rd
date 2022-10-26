@@ -5,7 +5,7 @@
 \alias{prefs_rstudio}
 \title{prefs_rstudio}
 \format{
-A list with 233 items:
+A list with 239 items:
 \describe{
 
 \item{\code{run_rprofile_on_resume}}{Whether to run .Rprofile again after resuming a suspended R session.}
@@ -37,7 +37,7 @@ A list with 233 items:
 \item{\code{blinking_cursor}}{Whether to flash the cursor off and on.}
 \item{\code{margin_column}}{The number of columns of text after which the margin is shown.}
 \item{\code{show_invisibles}}{Whether to show invisible characters, such as spaces and tabs, in the RStudio code editor.}
-\item{\code{show_indent_guides}}{Whether to show indentation guides in the RStudio code editor.}
+\item{\code{indent_guides}}{Style for indentation guides in the RStudio code editor.}
 \item{\code{continue_comments_on_newline}}{Whether to continue comments (by inserting the comment character) after adding a new line.}
 \item{\code{highlight_web_link}}{Whether web links in comments are clickable.}
 \item{\code{editor_keybindings}}{The keybindings to use in the RStudio code editor.}
@@ -83,6 +83,7 @@ A list with 233 items:
 \item{\code{highlight_console_errors}}{Whether to display error, warning, and message output in a different color.}
 \item{\code{scroll_past_end_of_document}}{Whether to allow scrolling past the end of a file.}
 \item{\code{highlight_r_function_calls}}{Whether to highlight R function calls in the code editor.}
+\item{\code{color_preview}}{Whether to show preview for named and hexadecimal colors.}
 \item{\code{rainbow_parentheses}}{Whether to highlight parentheses in a variety of colors.}
 \item{\code{console_line_length_limit}}{The maximum number of characters to display in a single line in the R console.}
 \item{\code{console_max_lines}}{The maximum number of console actions to store and display in the console scrollback buffer.}
@@ -153,8 +154,8 @@ A list with 233 items:
 \item{\code{sort_file_names_naturally}}{Whether to sort file names naturally, so that e.g., file10.R comes after file9.R}
 \item{\code{sync_files_pane_working_dir}}{Whether to change the directory in the Files pane automatically when the working directory in R changes.}
 \item{\code{jobs_tab_visibility}}{The visibility of the Jobs tab.}
-\item{\code{show_launcher_jobs_tab}}{Whether to show the Launcher jobs tab in RStudio Pro and RStudio Workbench.}
-\item{\code{launcher_jobs_sort}}{How to sort jobs in the Launcher tab in RStudio Pro and RStudio Workbench.}
+\item{\code{show_launcher_jobs_tab}}{Whether to show the Workbench Jobs tab in RStudio Pro and RStudio Workbench.}
+\item{\code{launcher_jobs_sort}}{How to sort jobs in the Workbench Jobs tab in RStudio Pro and RStudio Workbench.}
 \item{\code{busy_detection}}{How to detect busy status in the Terminal.}
 \item{\code{busy_exclusion_list}}{A list of apps that should not be considered busy in the Terminal.}
 \item{\code{knit_working_dir}}{The working directory to use when knitting R Markdown documents.}
@@ -176,9 +177,10 @@ A list with 233 items:
 \item{\code{git_exe_path}}{The path to the Git executable to use.}
 \item{\code{svn_exe_path}}{The path to the Subversion executable to use.}
 \item{\code{terminal_path}}{The path to the terminal executable to use.}
-\item{\code{rsa_key_path}}{The path to the RSA key file to use.}
+\item{\code{rsa_key_path}}{The path to the SSH key file to use.}
+\item{\code{ssh_key_type}}{The encryption type to use for the SSH key file.}
 \item{\code{use_devtools}}{Whether to use the devtools R package.}
-\item{\code{clean_before_install}}{Clean before install.}
+\item{\code{clean_before_install}}{Always use --preclean when installing package.}
 \item{\code{use_internet2}}{Whether to use Internet2 for networking on R for Windows.}
 \item{\code{use_secure_download}}{Whether to use secure downloads when fetching R packages.}
 \item{\code{cleanup_after_r_cmd_check}}{Whether to clean up temporary files after running R CMD CHECK.}
@@ -232,7 +234,7 @@ A list with 233 items:
 \item{\code{python_version}}{The Python version.}
 \item{\code{python_path}}{The path to the default Python interpreter.}
 \item{\code{save_retry_timeout}}{The maximum amount of seconds of retry for save operations.}
-\item{\code{insert_native_pipe_operator}}{Whether the Insert Pipe Operator command should insert the native R pipe operator, |>}
+\item{\code{insert_native_pipe_operator}}{Whether the Insert Pipe Operator command should use the native R pipe operator, |>}
 \item{\code{command_palette_mru}}{Whether to keep track of recently used commands in the Command Palette}
 \item{\code{show_memory_usage}}{Whether to compute and show memory usage in the Environment Pane}
 \item{\code{memory_query_interval_seconds}}{How many seconds to wait between automatic requeries of memory statistics (0 to disable)}
@@ -240,7 +242,11 @@ A list with 233 items:
 \item{\code{session_protocol_debug}}{Enable session protocol debug logging showing all session requests and events}
 \item{\code{python_project_environment_automatic_activate}}{When enabled, if the active project contains a Python virtual environment, then RStudio will automatically activate this environment on startup.}
 \item{\code{check_null_external_pointers}}{When enabled, RStudio will detect R objects containing null external pointers when building the Environment pane, and avoid introspecting their contents further.}
-\item{\code{quarto_enabled}}{Enable IDE features for the Quarto publishing system.}
+\item{\code{ui_language}}{The IDE's user-interface language.}
+\item{\code{native_file_dialogs}}{Whether RStudio Desktop will use the operating system's native File and Message dialog boxes.}
+\item{\code{discard_pending_console_input_on_error}}{When enabled, any pending console input will be discarded when an (uncaught) R error occurs.}
+\item{\code{editor_scroll_multiplier}}{A integer value, 1-200, to set the editor scroll multiplier. The higher the value, the faster the scrolling.}
+\item{\code{text_rendering}}{Control how text is rendered within the IDE surface.}
 }
 }
 \source{

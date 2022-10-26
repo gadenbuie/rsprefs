@@ -5,7 +5,7 @@
 \alias{prefs_rstudio_v}
 \title{prefs_rstudio_v}
 \format{
-A list with preferences from 7 released
+A list with preferences from 8 released
 versions of RStudio.
 }
 \source{
