@@ -5,7 +5,7 @@
 \alias{prefs_rstudio}
 \title{prefs_rstudio}
 \format{
-A list with 239 items:
+A list with 242 items:
 \describe{
 
 \item{\code{run_rprofile_on_resume}}{Whether to run .Rprofile again after resuming a suspended R session.}
@@ -85,6 +85,7 @@ A list with 239 items:
 \item{\code{highlight_r_function_calls}}{Whether to highlight R function calls in the code editor.}
 \item{\code{color_preview}}{Whether to show preview for named and hexadecimal colors.}
 \item{\code{rainbow_parentheses}}{Whether to highlight parentheses in a variety of colors.}
+\item{\code{rainbow_fenced_divs}}{Whether to highlight fenced divs in a variety of colors.}
 \item{\code{console_line_length_limit}}{The maximum number of characters to display in a single line in the R console.}
 \item{\code{console_max_lines}}{The maximum number of console actions to store and display in the console scrollback buffer.}
 \item{\code{ansi_console_mode}}{How to treat ANSI escape codes in the console.}
@@ -130,6 +131,7 @@ A list with 239 items:
 \item{\code{rmd_preferred_template_path}}{The path to the preferred R Markdown template.}
 \item{\code{rmd_viewer_type}}{Where to display R Markdown documents when they have completed rendering.}
 \item{\code{show_publish_diagnostics}}{Whether to show verbose diagnostic information when publishing content.}
+\item{\code{enable_cloud_publish_ui}}{Whether to show UI for publishing content to Posit Cloud.}
 \item{\code{publish_check_certificates}}{Whether to check remote server SSL certificates when publishing content.}
 \item{\code{use_publish_ca_bundle}}{Whether to use a custom certificate authority (CA) bundle when publishing content.}
 \item{\code{publish_ca_bundle}}{The path to the custom certificate authority (CA) bundle to use when publishing content.}
@@ -197,7 +199,7 @@ A list with 239 items:
 \item{\code{default_r_version}}{The R version to use by default.}
 \item{\code{data_viewer_max_columns}}{The maximum number of columns to show at once in the data viewer.}
 \item{\code{data_viewer_max_cell_size}}{The maximum number of characters to show in a data viewer cell.}
-\item{\code{enable_screen_reader}}{Support accessibility aids such as screen readers (RStudio Server).}
+\item{\code{enable_screen_reader}}{Support accessibility aids such as screen readers.}
 \item{\code{typing_status_delay_ms}}{Number of milliseconds to wait after last keystroke before updating live region.}
 \item{\code{reduced_motion}}{Reduce use of animations in the user interface.}
 \item{\code{tab_key_move_focus}}{Tab key moves focus out of text editing controls instead of inserting tabs.}
@@ -245,8 +247,9 @@ A list with 239 items:
 \item{\code{ui_language}}{The IDE's user-interface language.}
 \item{\code{native_file_dialogs}}{Whether RStudio Desktop will use the operating system's native File and Message dialog boxes.}
 \item{\code{discard_pending_console_input_on_error}}{When enabled, any pending console input will be discarded when an (uncaught) R error occurs.}
-\item{\code{editor_scroll_multiplier}}{A integer value, 1-200, to set the editor scroll multiplier. The higher the value, the faster the scrolling.}
+\item{\code{editor_scroll_multiplier}}{An integer value, 1-200, to set the editor scroll multiplier. The higher the value, the faster the scrolling.}
 \item{\code{text_rendering}}{Control how text is rendered within the IDE surface.}
+\item{\code{disable_renderer_accessibility}}{Disable Electron accessibility support.}
 }
 }
 \source{
