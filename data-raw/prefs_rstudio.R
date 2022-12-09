@@ -41,18 +41,18 @@ rstudio_prefs <-
     prefs_schema_prepare(content)
   })
 
-prefs_rstudio_v <- rstudio_prefs[setdiff(names(rstudio_prefs), "latest")]
-prefs_rstudio <- rstudio_prefs$latest
-
 # Write a JSON version of prefs for better diffs
 jsonlite::write_json(
-  prefs_rstudio_v,
-  here::here("data-raw/prefs_rstudio_v.json"),
+  rstudio_prefs,
+  here::here("data-raw/rstudio_prefs.json"),
   pretty = TRUE,
   auto_unbox = TRUE,
   null = "null",
   force = TRUE
 )
+
+prefs_rstudio_v <- rstudio_prefs[setdiff(names(rstudio_prefs), "latest")]
+prefs_rstudio <- rstudio_prefs$latest
 
 saveRDS(prefs_rstudio, here::here("inst", "prefs_rstudio.rds"), version = 3)
 usethis::use_data(prefs_rstudio_v, overwrite = TRUE)
