@@ -466,7 +466,7 @@ print.rs_pref <- function(x, ...) {
     paste0(paste(x$parent, collapse = "$"), "$")
   } else ""
 
-  cli::cli_text("<{parent}{.strong {x$name}}>")
+  cli::cli_text("<rspref: {parent}{.strong {x$name}}>")
   cli::cli_text("{.emph {x$description}}")
   cli::cli_div(theme = list(
     span.dt = list(color = "yellow"),
