@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # rsprefs
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/gadenbuie/rsprefs/workflows/R-CMD-check/badge.svg)](https://github.com/gadenbuie/rsprefs/actions)
+[![R-CMD-check](https://github.com/gadenbuie/rsprefs/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gadenbuie/rsprefs/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of rsprefs is to help you manage your RStudio preferences.
@@ -38,21 +38,21 @@ library(rsprefs)
 
 1. Snapshot your RStudio preferences to a new GitHub gist.
    Set `path = "new private gist"` to keep your preferences private.
-   
+
    ```r
    snapshot_prefs_save(name = "sync", path = "new gist")
    ```
    ```
    ✓ Created gist with id 96e8c7f0a624bfed8018987185feb30b
    ℹ Use this gist automatically by adding the following to your ~/.Rprofile.
-   Call `usethis::edit_r_profile()`     
-  
+   Call `usethis::edit_r_profile()`
+
    options(rsprefs.gist_id = "96e8c7f0a624bfed8018987185feb30b")
-  
+
    ✓ Creating gist with user-prefs.json ... done
    ✓ Writing snapshot sync to new gist ... done
    ```
-  
+
 2. Open your `~/.Rprofile` using `usethis::edit_r_profile()` and add the `rsprefs.gist_id` option from the output above.
 
 3. If you change your IDE preferences you can update your snapshot by name,
@@ -61,7 +61,7 @@ library(rsprefs)
    ```r
    snapshot_prefs_save("sync", overwrite = TRUE)
    ```
-   
+
 4. On a different computer or session, setup the `rsprefs.gist_id` option and then apply your snapshot.
 
    ```r
@@ -99,8 +99,8 @@ or you can apply the preferences in a snapshot with `snapshot_prefs_use()`.
 
 ```{r local-prefs-preview}
 snapshot_prefs_use(
-  name = "demo", 
-  path = tmp_snap, 
+  name = "demo",
+  path = tmp_snap,
   preview = TRUE
 )
 ```
@@ -125,16 +125,16 @@ There are three arguments that control which preferences are included:
   - `"system"` are derived from system-wide `rstudio-prefs.json`
   - `"user"` are set by the user for all sessions (global options)
   - `"project"` are set by the current project session
-  
+
   The default is `"user"`, since these are the preferences you've most
   intentionally set for your IDE. Also, `"project"` preferences are already
   stored in the `.Rproj` file.
-  
+
 For example, you could store your favorite pane layout as `"favorite_panes"`:
 
 ```{r local-prefs-panes}
 snapshot_prefs_save(
-  name = "favorite_panes", 
+  name = "favorite_panes",
   path = tmp_snap,
   include = "panes"
 )
@@ -155,14 +155,14 @@ To quickly reset all defaults, call
 prefs_reset_defaults()
 ```
 
-If you want to return to your personal preferences, you can undo the change to the defaults with 
+If you want to return to your personal preferences, you can undo the change to the defaults with
 
 ```{r eval=FALSE}
 snapshot_prefs_undo()
 ```
 
 For a longer-term return to RStudio's defaults, make sure that you've taken [a snapshot of your personal preferences](#quick-start) before you reset.
-  
+
 ## Explore preferences
 
 You can obtain a list of available preferences for your version of RStudio using:

@@ -4,8 +4,7 @@
 # rsprefs
 
 <!-- badges: start -->
-
-[![R-CMD-check](https://github.com/gadenbuie/rsprefs/workflows/R-CMD-check/badge.svg)](https://github.com/gadenbuie/rsprefs/actions)
+[![R-CMD-check](https://github.com/gadenbuie/rsprefs/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gadenbuie/rsprefs/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of rsprefs is to help you manage your RStudio preferences.
@@ -35,7 +34,7 @@ library(rsprefs)
 
         ✓ Created gist with id 96e8c7f0a624bfed8018987185feb30b
         ℹ Use this gist automatically by adding the following to your ~/.Rprofile.
-        Call `usethis::edit_r_profile()`     
+        Call `usethis::edit_r_profile()`
 
         options(rsprefs.gist_id = "96e8c7f0a624bfed8018987185feb30b")
 
@@ -96,8 +95,8 @@ the preferences included in the snapshot without applying them.)
 
 ``` r
 snapshot_prefs_use(
-  name = "demo", 
-  path = tmp_snap, 
+  name = "demo",
+  path = tmp_snap,
   preview = TRUE
 )
 #> <snapshot "demo">
@@ -148,7 +147,7 @@ For example, you could store your favorite pane layout as
 
 ``` r
 snapshot_prefs_save(
-  name = "favorite_panes", 
+  name = "favorite_panes",
   path = tmp_snap,
   include = "panes"
 )
@@ -193,7 +192,7 @@ RStudio using:
 schema <- prefs_schema()
 #> ! Using preference schema from RStudio v2022.02.0+443
 #> x Schema for current version v2022.2.0.443 is not available online (or is not different).
-#>  
+#>
 ```
 
 rsprefs includes the preference information for RStudio releases since
