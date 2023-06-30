@@ -109,7 +109,7 @@
 <code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"sync"</span>, path <span class="op">=</span> <span class="st">"new gist"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>✓ Created gist with id <span class="fl">96e8</span>c7f0a624bfed8018987185feb30b</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ℹ Use this gist automatically by adding the following to your <span class="sc">~</span><span class="er">/</span>.Rprofile.</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Call <span class="st">`</span><span class="at">usethis::edit_r_profile()</span><span class="st">`</span>     </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Call <span class="st">`</span><span class="at">usethis::edit_r_profile()</span><span class="st">`</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">rsprefs.gist_id =</span> <span class="st">"96e8c7f0a624bfed8018987185feb30b"</span>)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -151,8 +151,8 @@
 <p>or you can apply the preferences in a snapshot with <code><a href="reference/snapshot_prefs.html">snapshot_prefs_use()</a></code>. (You can also set <code>preview = TRUE</code> to preview the preferences included in the snapshot without applying them.)</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_use</a></span><span class="op">(</span></span>
-<span>  name <span class="op">=</span> <span class="st">"demo"</span>, </span>
-<span>  path <span class="op">=</span> <span class="va">tmp_snap</span>, </span>
+<span>  name <span class="op">=</span> <span class="st">"demo"</span>,</span>
+<span>  path <span class="op">=</span> <span class="va">tmp_snap</span>,</span>
 <span>  preview <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; &lt;snapshot "demo"&gt;</span></span>
@@ -197,7 +197,7 @@
 <p>For example, you could store your favorite pane layout as <code>"favorite_panes"</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/snapshot_prefs.html">snapshot_prefs_save</a></span><span class="op">(</span></span>
-<span>  name <span class="op">=</span> <span class="st">"favorite_panes"</span>, </span>
+<span>  name <span class="op">=</span> <span class="st">"favorite_panes"</span>,</span>
 <span>  path <span class="op">=</span> <span class="va">tmp_snap</span>,</span>
 <span>  include <span class="op">=</span> <span class="st">"panes"</span></span>
 <span><span class="op">)</span></span>
@@ -231,7 +231,7 @@
 <code class="sourceCode R"><span><span class="va">schema</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/prefs_schema.html">prefs_schema</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ! Using preference schema from RStudio v2022.02.0+443</span></span>
 <span><span class="co">#&gt; x Schema for current version v2022.2.0.443 is not available online (or is not different).</span></span>
-<span><span class="co">#&gt;  </span></span></code></pre></div>
+<span><span class="co">#&gt;</span></span></code></pre></div>
 <p>rsprefs includes the preference information for RStudio releases since 1.3.959. If you’re using dailies or preview versions fo RStudio, rsprefs will attempt to download the schema that matches your version, falling back to the latest version if one is not available.</p>
 <p>For quick reference, the latest preference details are included in the <code>prefs_rstudio</code> object.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
