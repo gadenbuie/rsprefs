@@ -5,7 +5,7 @@
 \alias{prefs_rstudio}
 \title{prefs_rstudio}
 \format{
-A list with 242 items:
+A list with 244 items:
 \describe{
 
 \item{\code{run_rprofile_on_resume}}{Whether to run .Rprofile again after resuming a suspended R session.}
@@ -250,6 +250,8 @@ A list with 242 items:
 \item{\code{editor_scroll_multiplier}}{An integer value, 1-200, to set the editor scroll multiplier. The higher the value, the faster the scrolling.}
 \item{\code{text_rendering}}{Control how text is rendered within the IDE surface.}
 \item{\code{disable_renderer_accessibility}}{Disable Electron accessibility support.}
+\item{\code{copilot_enabled}}{When enabled, RStudio will use GitHub Copilot to provide code suggestions.}
+\item{\code{copilot_completions_delay}}{The delay (in milliseconds) before GitHub Copilot completions are requested after the cursor position has changed.}
 }
 }
 \source{
